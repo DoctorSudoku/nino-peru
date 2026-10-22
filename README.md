@@ -118,6 +118,12 @@ Los PDFs se cachean en `data/raw/indeci/` para no descargarlos en cada ejecució
 - **MCP local**: `python3 scripts/mcp_server.py` (stdio) para trabajar sobre los archivos
   del repositorio sin desplegar nada.
 
+## Para agentes
+
+Si eres un agente que va a administrar este repositorio, lee **[AGENTS.md](AGENTS.md)**
+antes de tocar nada: define qué se puede cambiar solo, qué requiere revisión humana y
+qué está prohibido.
+
 ## Publicar y mantener
 
 - [Dónde publicar](docs/DESPLIEGUE.md): GitHub Pages o Cloudflare Pages, ambos gratis,
