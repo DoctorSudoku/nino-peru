@@ -264,7 +264,8 @@ h1 em { font-style: normal; color: var(--accent); }
   background: var(--ink); color: var(--bg); border-radius: 99px;
   font-size: 9px; font-weight: 700; line-height: 15px; text-align: center;
 }
-.danos-kpi .l span { font-size: .95em; }
+.danos-kpi .l span { font-size: 1.35em; vertical-align: -.12em; margin-right: .1rem; }
+.th-ico { font-size: 1.35em; vertical-align: -.12em; margin-right: .12rem; letter-spacing: 0; }
 
 .inc-legend { display: flex; flex-wrap: wrap; gap: .7rem; padding: .6rem .8rem .8rem; font-size: .72rem; color: var(--ink-3); }
 .inc-legend span { display: inline-flex; align-items: center; gap: .3rem; }
