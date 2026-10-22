@@ -1,0 +1,15 @@
+# Cloudflare Pages: caché y cabeceras de seguridad
+# Los datos cambian varias veces al día; los assets son inmutables.
+
+/data/*
+  Cache-Control: public, max-age=300, stale-while-revalidate=120
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/*
+  Cache-Control: public, max-age=600
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
+  Content-Security-Policy: default-src 'self'; img-src 'self' data: https://server.arcgisonline.com; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors *

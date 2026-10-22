@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="es-PE" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API · El Niño en el Perú</title>
+<meta name="description" content="Endpoints JSON abiertos del tablero de El Niño: índices NOAA, datos del ENFEN, rejilla de temperatura del mar, ríos, embalses e incidencias.">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><text y='.9em' font-size='90'>🔌</text></svg>">
+<script>
+  try {
+    var q = new URLSearchParams(location.search).get("theme");
+    var t = q || localStorage.getItem("nino-theme");
+    if (!t) t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", t);
+  } catch (e) {}
+</script>
+<style>
+  .api { padding: clamp(1.4rem, 3vw, 2.4rem) 0 2.4rem; }
+  .ep { padding: 1rem 0 1.2rem; border-top: 1px solid var(--line-2); }
+  .ep:first-of-type { border-top: 1px solid var(--line); }
+  .ep h2 { font-size: 1.1rem; margin: 0 0 .15rem; }
+  .ep code { font-family: ui-monospace, Menlo, monospace; font-size: .82rem; background: var(--surface-2); padding: .1rem .35rem; border-radius: 4px; }
+  .ep p { margin: .3rem 0; font-size: .86rem; color: var(--ink-2); }
+  .campos { display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .5rem; }
+  .campos span { font-family: ui-monospace, Menlo, monospace; font-size: .7rem; background: var(--surface-2); border: 1px solid var(--line); padding: .05rem .35rem; border-radius: 5px; color: var(--ink-3); }
+  pre.block {
+    background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px;
+    padding: .7rem .8rem; overflow-x: auto; font-size: .76rem; margin: .5rem 0 0;
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <div class="brand">
+      <a class="brand-mark" href="index.html" style="text-decoration:none">El Niño · Perú</a>
+      <span class="brand-sub">API</span>
+    </div>
+    <div class="topbar-actions"><a class="btn" href="index.html">← Volver al tablero</a></div>
+  </div>
+</header>
+
+<main class="wrap api">
+  <p class="kicker">Datos abiertos</p>
+  <h1>API</h1>
+  <p class="lede">Todo lo que muestra el tablero está disponible como JSON estático. Sin clave, sin registro, con CORS abierto en el despliegue.</p>
+
+  <pre class="block"># catálogo de endpoints
+GET  data/index.json
+
+# ejemplo
+curl -s data/enfen.json | jq '.alert, .forecast'</pre>
+
+  <div id="eps"></div>
+
+  <h2 style="margin-top:2rem">Condiciones</h2>
+  <ul style="font-size:.88rem;color:var(--ink-2)">
+    <li>Frecuencia: los índices de NOAA se actualizan a diario; el ENFEN, cada dos semanas; INDECI, varias veces al día.</li>
+    <li>Los datos de NOAA son de dominio público. Los documentos del ENFEN e INDECI se citan con su fuente y número.</li>
+    <li>Atribución sugerida: <em>Tablero El Niño Perú</em> — datos de NOAA, ENFEN e INDECI.</li>
+    <li>Si un valor no está disponible se devuelve <code>null</code>, nunca un cero.</li>
+  </ul>
+</main>
+
+<script>
+fetch("data/index.json", { cache: "no-cache" })
+  .then((r) => r.json())
+  .then((d) => {
+    document.getElementById("eps").innerHTML = d.endpoints.map((e) => `
+      <section class="ep">
+        <h2>${e.name}</h2>
+        <p><code>data/${e.file}</code></p>
+        <p>${e.desc}</p>
+        <div class="campos">${(e.campos || []).map((c) => `<span>${c}</span>`).join("")}</div>
+      </section>`).join("");
+  })
+  .catch(() => {
+    document.getElementById("eps").innerHTML = `<p class="chart-note">No se pudo leer data/index.json. Ejecute <code>python3 scripts/build.py</code>.</p>`;
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+# Alternativa: publicar en Cloudflare Pages.
+# Para usarla: copiar a .github/workflows/ y borrar publicar.yml (GitHub Pages).
+name: Publicar en Cloudflare Pages
+
+# Cada 3 horas, y a mano cuando hay algo urgente.
+on:
+  schedule:
+    - cron: "0 */3 * * *"   # UTC. En Lima: 19:00, 22:00, 01:00, ...
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/**"
+      - "data/curated/**"
+      - "public/**"
+      - ".github/workflows/publicar.yml"
+
+concurrency:
+  group: publicar
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Traer el repositorio
+        uses: actions/checkout@v4
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Dependencias (PyMuPDF para los PDF del INDECI)
+        run: python -m pip install --quiet --target .pylibs pymupdf
+
+      - name: Construir los datos
+        run: python scripts/build.py || echo "El build terminó con advertencias; se publica lo anterior"
+
+      - name: Verificar frescura
+        run: python scripts/check_frescura.py
+
+      - name: Comprobar que el sitio existe
+        run: |
+          test -f public/index.html || (echo "Falta public/index.html" && exit 1)
+          python - <<'PY'
+          import json, pathlib
+          for f in ("enso", "enfen", "sst"):
+              ruta = pathlib.Path("public/data") / f"{f}.json"
+              assert ruta.exists(), f"Falta {ruta}"
+              json.loads(ruta.read_text(encoding="utf-8"))
+          print("Datos válidos.")
+          PY
+
+      - name: Publicar en Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy public --project-name=nino-peru
+
+      - name: Aviso de fallo
+        if: failure()
+        run: echo "::error::La actualización falló. Revisar los pasos anteriores."

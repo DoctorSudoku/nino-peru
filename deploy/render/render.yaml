@@ -1,0 +1,14 @@
+# Render — SITIO ESTÁTICO (no "Web Service")
+#
+# Por qué estático y no un servicio web: los servicios web gratuitos de Render
+# se duermen a los 15 minutos y, mientras duermen, responden "Disallow: /" en
+# /robots.txt. Para un sitio de noticias eso es fatal para el SEO.
+# Un sitio estático no duerme.
+#
+# Uso: Render Dashboard → New → Blueprint → conectar el repositorio.
+
+staticSites:
+  - name: nino-peru
+    branch: main
+    buildCommand: python3 -m pip install --quiet --target .pylibs pymupdf && python3 scripts/build.py
+    staticPublishPath: ./public

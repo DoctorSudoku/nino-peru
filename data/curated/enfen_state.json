@@ -1,0 +1,384 @@
+{
+  "_readme": "Datos transcritos y verificados manualmente desde documentos oficiales del ENFEN. Cada bloque cita documento, sección y página. NO editar sin actualizar 'provenance'.",
+  "provenance": {
+    "document": "Informe Técnico ENFEN, Año 12, N° 18",
+    "cutoff": "2026-10-13",
+    "published": "2026-10-17",
+    "pages": 86,
+    "url": "https://enfen.imarpe.gob.pe/download/informe-tecnico-enfen-ano-12-n18-al-13-de-octubre-de-2026-2/?wpdmdl=2166",
+    "citation": "Informe Técnico ENFEN. Año 12, N° 18, 13 de octubre de 2026, 86 p."
+  },
+  "alert": {
+    "level": "Alerta de El Niño costero",
+    "magnitude_forecast": "Extraordinaria",
+    "set_by": "Comunicado Oficial ENFEN N° 18-2026 (16 de octubre de 2026)",
+    "url": "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-18-2026/?wpdmdl=2165",
+    "next_update": "2026-10-30",
+    "next_update_note": "Próximo Comunicado Oficial ENFEN (viernes 30 de octubre de 2026), según Informe Técnico N° 18, p. 24."
+  },
+  "indices": [
+    {
+      "month": "2025-09",
+      "icen": 0.22,
+      "icen_cat": "Neutra",
+      "roni": 0.78,
+      "roni_cat": "Fría Débil",
+      "oni": 0.45,
+      "oni_cat": "Neutra"
+    },
+    {
+      "month": "2025-10",
+      "icen": 0.42,
+      "icen_cat": "Neutra",
+      "roni": 0.85,
+      "roni_cat": "Fría Débil",
+      "oni": 0.55,
+      "oni_cat": "Fría Débil"
+    },
+    {
+      "month": "2025-11",
+      "icen": 0.5,
+      "icen_cat": "Neutra",
+      "roni": 0.92,
+      "roni_cat": "Fría Débil",
+      "oni": 0.55,
+      "oni_cat": "Fría Débil"
+    },
+    {
+      "month": "2025-12",
+      "icen": 0.51,
+      "icen_cat": "Neutra",
+      "roni": 0.97,
+      "roni_cat": "Fría Débil",
+      "oni": 0.55,
+      "oni_cat": "Fría Débil"
+    },
+    {
+      "month": "2026-01",
+      "icen": 0.06,
+      "icen_cat": "Neutra",
+      "roni": 0.9,
+      "roni_cat": "Fría Débil",
+      "oni": 0.39,
+      "oni_cat": "Neutra"
+    },
+    {
+      "month": "2026-02",
+      "icen": 0.42,
+      "icen_cat": "Neutra",
+      "roni": 0.72,
+      "roni_cat": "Fría Débil",
+      "oni": 0.16,
+      "oni_cat": "Neutra"
+    },
+    {
+      "month": "2026-03",
+      "icen": 0.96,
+      "icen_cat": "Cálida Débil",
+      "roni": 0.48,
+      "roni_cat": "Neutra",
+      "oni": 0.11,
+      "oni_cat": "Neutra"
+    },
+    {
+      "month": "2026-04",
+      "icen": 1.34,
+      "icen_cat": "Cálida Moderada",
+      "roni": 0.06,
+      "roni_cat": "Neutra",
+      "oni": 0.48,
+      "oni_cat": "Neutra"
+    },
+    {
+      "month": "2026-05",
+      "icen": 1.98,
+      "icen_cat": "Cálida Moderada",
+      "roni": 0.47,
+      "roni_cat": "Neutra",
+      "oni": 0.98,
+      "oni_cat": "Cálida Débil"
+    },
+    {
+      "month": "2026-06",
+      "icen": 2.66,
+      "icen_cat": "Cálida Fuerte",
+      "roni": 0.97,
+      "roni_cat": "Cálida Débil",
+      "oni": 1.41,
+      "oni_cat": "Cálida Moderada"
+    },
+    {
+      "month": "2026-07",
+      "icen": 3.38,
+      "icen_cat": "Cálida Fuerte",
+      "roni": 1.36,
+      "roni_cat": "Cálida Moderada",
+      "oni": 1.8,
+      "oni_cat": "Cálida Fuerte"
+    },
+    {
+      "month": "2026-08",
+      "icen": 3.98,
+      "icen_cat": "Cálida Extraordinaria",
+      "roni": 1.69,
+      "roni_cat": "Cálida Fuerte",
+      "oni": 2.16,
+      "oni_cat": "Cálida Muy Fuerte"
+    },
+    {
+      "month": "2026-09",
+      "icen": 4.15,
+      "icen_cat": "Cálida Extraordinaria",
+      "roni": 2.01,
+      "roni_cat": "Cálida Muy Fuerte",
+      "oni": 2.71,
+      "oni_cat": "Cálida Muy Fuerte",
+      "provisional": true,
+      "note": "ICENtmp/RONItmp/ONItmp: estimación en tiempo real con pronósticos NMME."
+    }
+  ],
+  "forecast": [
+    {
+      "region": "Niño 1+2 (costero)",
+      "event": "El Niño costero",
+      "magnitude": "Extraordinaria",
+      "until": "2027-01",
+      "then": "Fuerte hasta inicios del otoño 2027",
+      "page": 24
+    },
+    {
+      "region": "Niño 3.4 (global)",
+      "event": "El Niño global",
+      "magnitude": "Muy fuerte",
+      "until": "2027-02",
+      "then": "Reducción de magnitud hacia el otoño 2027",
+      "page": 24
+    }
+  ],
+  "territory": {
+    "summary": "El norte viene con más agua de lo normal. El Titicaca y la sierra sur, secos.",
+    "titicaca": {
+      "title": "Lago Titicaca",
+      "value": "Entre los 4 mínimos desde 1982",
+      "detail": "Niveles en ligero descenso, por debajo de lo normal y comparables a los cuatro mínimos con registro desde 1982.",
+      "page": 16
+    },
+    "lluvias": {
+      "title": "Lluvias en la sierra sur",
+      "value": "−60 % a −100 %",
+      "detail": "Déficit de precipitación en la región andina a fines de setiembre. El pronóstico octubre–diciembre mantiene lluvias bajo o dentro de lo normal en la sierra sur y la Amazonía.",
+      "page": 12,
+      "page_forecast": 25
+    },
+    "reservorios_nota": "Al 12 de octubre, todos los embalses bajan. Tinajones (Lambayeque) y Viconga (Lima) son los más críticos.",
+    "rios_destacados": [
+      "Tumbes El Tigre",
+      "Chira (Puente Sullana)",
+      "Piura (Sánchez Cerro)",
+      "La Leche Puchaca",
+      "Chancay Lambayeque",
+      "Jequetepeque",
+      "Chicama (Tambo)",
+      "Santa",
+      "Rímac Chosica",
+      "Lurín",
+      "Cañete",
+      "Pisco",
+      "Ica",
+      "Acarí",
+      "Tambo La Pascana",
+      "Caplina"
+    ],
+    "riego_reservorios": [
+      "Poechos",
+      "San Lorenzo",
+      "Tinajones",
+      "Gallito Ciego",
+      "Pasto Grande",
+      "Choclococha",
+      "Ccaracocha"
+    ]
+  },
+  "sectors": [
+    {
+      "id": "pesca",
+      "name": "Pesca",
+      "headline": "Cuota sur de anchoveta apenas despega: 1,7 % de avance",
+      "facts": [
+        {
+          "label": "Desembarque anchoveta región sur",
+          "value": 4347,
+          "unit": "t",
+          "detail": "Al 12 de octubre de 2026: 1,7 % de la cuota (LMTCP 251 000 t). Temporada 01 jul – 31 dic 2026 (R.M. N° 0185-2025-PRODUCE)."
+        },
+        {
+          "label": "Primera temporada 2026 Norte-Centro",
+          "value": null,
+          "unit": "",
+          "detail": "Concluida por R.M. N° 285-2026-PRODUCE a partir del 21 de agosto de 2026."
+        },
+        {
+          "label": "Productividad (clorofila-a, 0–100 km, 4°S–16°S)",
+          "value": null,
+          "unit": "",
+          "detail": "Cercana a su climatología durante el mes; en la última pentada superó el valor climatológico."
+        }
+      ],
+      "page": 15,
+      "datos": {
+        "region": "Sur",
+        "cuota_t": 251000,
+        "desembarque_t": 4347,
+        "avance_pct": 1.7,
+        "temporada": {
+          "inicio": "2026-07-01",
+          "fin": "2026-12-31",
+          "rm": "R.M. N° 0185-2025-PRODUCE"
+        },
+        "cierre_norte_centro": {
+          "fecha": "2026-08-21",
+          "rm": "R.M. N° 285-2026-PRODUCE"
+        },
+        "clorofila": "Cercana a su climatología; en la última pentada superó el valor normal."
+      }
+    },
+    {
+      "id": "agro",
+      "name": "Agricultura",
+      "headline": "Riesgo por agua: dependencia de reservorios en descenso antes del verano",
+      "facts": [
+        {
+          "label": "Disponibilidad hídrica",
+          "value": 58,
+          "unit": "%",
+          "detail": "Embalses al 58 % de la capacidad útil y en descenso; Tinajones (Lambayeque) muy bajo, principal zona arrocera."
+        },
+        {
+          "label": "Indicadores de producción y precios",
+          "value": null,
+          "unit": "",
+          "detail": "Integración con MIDAGRI/SIEA y SISAP en construcción (ver hoja de ruta)."
+        }
+      ],
+      "page": 17,
+      "status": "parcial"
+    },
+    {
+      "id": "salud",
+      "name": "Salud y emergencias",
+      "headline": "Aún sin serie propia: enlazamos los visores oficiales",
+      "facts": [
+        {
+          "label": "Emergencias y daños",
+          "value": null,
+          "unit": "",
+          "detail": "Pendiente: INDECI/SINPAD y visor geoespacial INDECI."
+        },
+        {
+          "label": "Escenarios de riesgo",
+          "value": "—",
+          "unit": "",
+          "detail": "Pendiente: CENEPRED/SIGRID."
+        }
+      ],
+      "page": null,
+      "status": "pendiente"
+    }
+  ],
+  "links": [
+    {
+      "name": "Visor INDECI (gestión de emergencias)",
+      "url": "https://geo.indeci.gob.pe/visorindeci/"
+    },
+    {
+      "name": "CENEPRED / SIGRID — escenarios de riesgo",
+      "url": "https://sigrid.cenepred.gob.pe/sigridv3/documento/22787"
+    },
+    {
+      "name": "SENAMHI — avisos meteorológicos",
+      "url": "https://www.senamhi.gob.pe/?p=aviso-meteorologico"
+    },
+    {
+      "name": "SENAMHI — monitoreo hidrológico",
+      "url": "https://www.senamhi.gob.pe/?p=monitoreo-hidrologico"
+    }
+  ],
+  "roadmap": [
+    {
+      "item": "Caudales por cuenca (automatizar Tabla 4 del informe ENFEN)",
+      "source": "ENFEN / SENAMHI / ANA",
+      "priority": "alta"
+    },
+    {
+      "item": "Producción agrícola y precios mayoristas por región",
+      "source": "MIDAGRI — SIEA y SISAP",
+      "priority": "alta"
+    },
+    {
+      "item": "Desembarques y cuotas de anchoveta por temporada",
+      "source": "PRODUCE / IMARPE",
+      "priority": "alta"
+    },
+    {
+      "item": "PBI agropecuario y pesquero, inflación de alimentos",
+      "source": "BCRP (API de series) / INEI",
+      "priority": "media"
+    },
+    {
+      "item": "Emergencias y daños registrados",
+      "source": "INDECI — SINPAD",
+      "priority": "media"
+    },
+    {
+      "item": "Precios internacionales de alimentos y commodities",
+      "source": "FAO FPMA / Banco Mundial Pink Sheet",
+      "priority": "media"
+    },
+    {
+      "item": "Mapa de anomalías de TSM del Pacífico (satélite)",
+      "source": "NOAA CoastWatch / ERDDAP",
+      "priority": "media"
+    }
+  ],
+  "weekly": {
+    "source": "Tabla 2, Informe Técnico ENFEN N° 18 (p. 25) — OISSTv2.1",
+    "unit": "°C",
+    "rows": [
+      {
+        "date": "2026-09-09",
+        "n12": 25.2,
+        "n12a": 4.6,
+        "n34": 29.5,
+        "n34a": 2.8
+      },
+      {
+        "date": "2026-09-16",
+        "n12": 25.4,
+        "n12a": 4.7,
+        "n34": 29.6,
+        "n34a": 3.0
+      },
+      {
+        "date": "2026-09-23",
+        "n12": 25.4,
+        "n12a": 4.7,
+        "n34": 29.7,
+        "n34a": 3.1
+      },
+      {
+        "date": "2026-09-30",
+        "n12": 26.1,
+        "n12a": 5.3,
+        "n34": 29.9,
+        "n34a": 3.2
+      },
+      {
+        "date": "2026-10-07",
+        "n12": 26.1,
+        "n12a": 5.2,
+        "n34": 30.0,
+        "n34a": 3.3
+      }
+    ]
+  }
+}

@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es-PE" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Embebibles · El Niño en el Perú</title>
+<meta name="description" content="Gráficos y mapas del tablero de El Niño para insertar en otros medios, con código listo para copiar.">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><text y='.9em' font-size='90'>🧩</text></svg>">
+<script>
+  try {
+    var q = new URLSearchParams(location.search).get("theme");
+    var t = q || localStorage.getItem("nino-theme");
+    if (!t) t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", t);
+  } catch (e) {}
+</script>
+<style>
+  .emb { padding: clamp(1.4rem, 3vw, 2.4rem) 0 2rem; }
+  .emb-item { margin: 1.6rem 0 2.2rem; }
+  .emb-head { display: flex; align-items: baseline; gap: .8rem; flex-wrap: wrap; margin-bottom: .6rem; }
+  .emb-head h2 { font-size: 1.2rem; }
+  .emb-head .tag { background: var(--surface-2); color: var(--ink-3); }
+  .emb-frame { width: 100%; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); display: block; }
+  .code-wrap { margin-top: .55rem; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--surface-2); }
+  .code-top { display: flex; align-items: center; justify-content: space-between; padding: .3rem .5rem .3rem .7rem; border-bottom: 1px solid var(--line); }
+  .code-top span { font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+  .code {
+    margin: 0; padding: .6rem .7rem; font-family: ui-monospace, Menlo, monospace;
+    font-size: .72rem; color: var(--ink-2); overflow-x: auto; white-space: pre;
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <div class="brand">
+      <a class="brand-mark" href="index.html" style="text-decoration:none">El Niño · Perú</a>
+      <span class="brand-sub">Embebibles</span>
+    </div>
+    <div class="topbar-actions"><a class="btn" href="index.html">← Volver al tablero</a></div>
+  </div>
+</header>
+
+<main class="wrap emb">
+  <p class="kicker">Para otros medios</p>
+  <h1>Embebibles</h1>
+  <p class="lede">Cada gráfico se puede insertar en otra web con un <code>&lt;iframe&gt;</code>. Incluye la atribución y el enlace de vuelta. El ancho es flexible; el alto está fijado en el código.</p>
+
+  <div id="lista"></div>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const BASE = location.origin + location.pathname.replace("embebibles.html", "");
+const ITEMS = [
+  { id: "estado", name: "Los tres índices", h: 520, d: "ICEN, RONI y ONI de los últimos 13 meses." },
+  { id: "historico", name: "Comparativo histórico", h: 520, d: "Anomalías del mar desde 1950 con los episodios sombreados." },
+  { id: "comparador", name: "Mes a mes con los grandes", h: 520, d: "El episodio actual contra 1982–83, 1997–98 y 2015–16." },
+  { id: "pronostico", name: "Qué viene", h: 420, d: "Escenario y horizonte del último informe del ENFEN." },
+  { id: "territorio", name: "Agua y territorio", h: 1080, d: "Ríos, embalses, Titicaca y lluvias en la sierra sur." },
+  { id: "incidencias", name: "Incidencias recientes", h: 700, d: "Mapa de emergencias reportadas por el INDECI." },
+  { id: "sectores", name: "Agro y pesca", h: 700, d: "Anchoveta y agua para riego." },
+];
+
+const lista = document.getElementById("lista");
+lista.innerHTML = ITEMS.map((it) => {
+  const src = `${BASE}index.html?embed=${it.id}`;
+  const code = `<iframe src="${src}" width="100%" height="${it.h}" style="border:0" title="${it.name} — El Niño Perú" loading="lazy"></iframe>`;
+  return `
+    <section class="emb-item">
+      <div class="emb-head"><span class="tag">${it.d}</span></div>
+      <iframe class="emb-frame" src="${src}" height="${it.h}" loading="lazy" title="Vista previa: ${it.name}"></iframe>
+      <div class="code-wrap">
+        <div class="code-top"><span>${it.name} · HTML</span><button class="btn" data-code="${encodeURIComponent(code)}">Copiar código</button></div>
+        <pre class="code">${code.replace(/&/g, "&amp;").replace(/</g, "&lt;")}</pre>
+      </div>
+    </section>`;
+}).join("");
+
+lista.querySelectorAll("[data-code]").forEach((b) => {
+  b.addEventListener("click", async () => {
+    const code = decodeURIComponent(b.dataset.code);
+    try { await navigator.clipboard.writeText(code); } catch (e) {
+      const ta = document.createElement("textarea"); ta.value = code;
+      document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove();
+    }
+    const t = document.getElementById("toast"); t.textContent = "Código copiado"; t.classList.add("show");
+    setTimeout(() => t.classList.remove("show"), 1800);
+  });
+});
+</script>
+</body>
+</html>

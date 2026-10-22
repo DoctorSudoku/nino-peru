@@ -1,0 +1,637 @@
+{
+  "_readme": "Extraído automáticamente de las Tablas 4 y 5 del Informe Técnico ENFEN Año 12 N° 18 con scripts/extract_enfen_tables.py. Revisar antes de publicar.",
+  "provenance": {
+    "document": "Informe Técnico ENFEN, Año 12, N° 18",
+    "cutoff": "2026-10-13",
+    "tabla_rios": "Tabla 4, pp. 27-32 — caudales al 10 de octubre de 2026",
+    "tabla_reservorios": "Tabla 5, p. 33 — reservorios al 12 de octubre de 2026"
+  },
+  "rios": [
+    {
+      "zona": "Pacifico Norte",
+      "rio": "Tumbes Cabo Inga",
+      "sept_anom": 58.76,
+      "sept_cond": "Significativamente sobre lo normal",
+      "oct_anom": null,
+      "oct_cond": null
+    },
+    {
+      "zona": "Pacifico Norte",
+      "rio": "Tumbes El Tigre",
+      "sept_anom": 105.08,
+      "sept_cond": "Significativamente sobre lo normal",
+      "oct_anom": 155.71,
+      "oct_cond": "Significativamente sobre lo normal"
+    },
+    {
+      "zona": "Pacifico Norte",
+      "rio": "Chira (Ardilla)",
+      "sept_anom": 12.68,
+      "sept_cond": "Normal",
+      "oct_anom": -13.82,
+      "oct_cond": "Normal"
+    },
+    {
+      "zona": "Pacifico Norte",
+      "rio": "Chira (Puente Sullana)",
+      "sept_anom": 65.23,
+      "sept_cond": "Significativamente sobre lo normal",
+      "oct_anom": 269.8,
+      "oct_cond": "Significativamente sobre lo normal"
+    },
+    {
+      "zona": "Pacifico Norte",
+      "rio": "Chira (rio Quiroz)",
+      "sept_anom": 57.09,
+      "sept_cond": "Significativamente sobre lo normal",
+      "oct_anom": 16.02,
+      "oct_cond": "Ligeramente sobre lo normal"
+    },
+    {
+      "zona": "Pacifico Norte",
+      "rio": "El Ciruelo",
+      "sept_anom": 6.61,
+      "sept_cond": "Normal",
+      "oct_anom": -9.07,
+      "oct_cond": "Normal"
+    },
+    {
+      "zona": "Pacifico Norte",
+      "rio": "Puente Internacional",
+      "sept_anom": 84.2,
+      "sept_cond": "Significativamente sobre lo normal",
+      "oct_anom": 63.72,
+      "oct_cond": "Significativamente sobre lo normal"
+    },
+    {
+      "zona": "Pacifico Norte",
+      "rio": "Piura (Sánchez Cerro)",
+      "sept_anom": 0.0,
+      "sept_cond": "Normal",
+      "oct_anom": 0.0,
+      "oct_cond": "Normal"
+    },
+    {
+      "zona": "Pacifico Norte",
+      "rio": "San Pedro",
+      "sept_anom": -10.8,
+      "sept_cond": "Normal",
+      "oct_anom": 27.92,
+      "oct_cond": "Ligeramente sobre lo normal"
+    },
+    {
+      "zona": "Pacifico Norte",
+      "rio": "Motupe (Marripon)",
+      "sept_anom": 47.22,
+      "sept_cond": "Ligeramente sobre lo normal",
+      "oct_anom": 114.85,
+      "oct_cond": "Significativamente sobre lo normal"
+    },
+    {
+      "zona": "Pacifico Norte",
+      "rio": "La Leche Puchaca",
+      "sept_anom": 407.23,
+      "sept_cond": "Significativamente sobre lo normal",
+      "oct_anom": 211.63,
+      "oct_cond": "Significativamente sobre lo normal"
+    },
+    {
+      "zona": "Pacifico Norte",
+      "rio": "Chancay Lambayeque",
+      "sept_anom": -29.19,
+      "sept_cond": "Ligeramente por debajo de lo normal",
+      "oct_anom": -2.02,
+      "oct_cond": "Normal"
+    },
+    {
+      "zona": "Pacifico Norte",
+      "rio": "Batan Zaña",
+      "sept_anom": 14.99,
+      "sept_cond": "Normal",
+      "oct_anom": 20.96,
+      "oct_cond": "Ligeramente sobre lo normal"
+    },
+    {
+      "zona": "Pacifico Norte",
+      "rio": "Jequetepeque",
+      "sept_anom": 14.93,
+      "sept_cond": "Normal",
+      "oct_anom": 9.73,
+      "oct_cond": "Normal"
+    },
+    {
+      "zona": "Pacifico Norte",
+      "rio": "Chicama (Salinar)",
+      "sept_anom": -9.41,
+      "sept_cond": "Normal",
+      "oct_anom": -31.61,
+      "oct_cond": "Ligeramente por debajo de lo normal"
+    },
+    {
+      "zona": "Pacifico Norte",
+      "rio": "Chicama (Tambo)",
+      "sept_anom": -0.6,
+      "sept_cond": "Normal",
+      "oct_anom": -46.82,
+      "oct_cond": "Ligeramente por debajo de lo normal"
+    },
+    {
+      "zona": "Pacifico Norte",
+      "rio": "Moche",
+      "sept_anom": 0.0,
+      "sept_cond": "Normal",
+      "oct_anom": 0.0,
+      "oct_cond": "Normal"
+    },
+    {
+      "zona": "Pacifico Norte",
+      "rio": "Santa",
+      "sept_anom": 17.11,
+      "sept_cond": "Ligeramente sobre lo normal",
+      "oct_anom": 14.89,
+      "oct_cond": "Normal"
+    },
+    {
+      "zona": "Pacifico Centro",
+      "rio": "Pativilca",
+      "sept_anom": 37.54,
+      "sept_cond": "Ligeramente sobre lo normal",
+      "oct_anom": 8.18,
+      "oct_cond": "Normal"
+    },
+    {
+      "zona": "Pacifico Centro",
+      "rio": "Huaura",
+      "sept_anom": 1.39,
+      "sept_cond": "Normal",
+      "oct_anom": -24.42,
+      "oct_cond": "Ligeramente por debajo de lo normal"
+    },
+    {
+      "zona": "Pacifico Centro",
+      "rio": "Huaral (Vichaycocha)",
+      "sept_anom": 12.06,
+      "sept_cond": "Normal",
+      "oct_anom": -15.48,
+      "oct_cond": "Ligeramente por debajo de lo normal"
+    },
+    {
+      "zona": "Pacifico Centro",
+      "rio": "Huaral (Santo Domingo)",
+      "sept_anom": 16.01,
+      "sept_cond": "Ligeramente sobre lo normal",
+      "oct_anom": 3.22,
+      "oct_cond": "Normal"
+    },
+    {
+      "zona": "Pacifico Centro",
+      "rio": "Chillón (Obrajillo)",
+      "sept_anom": 19.67,
+      "sept_cond": "Ligeramente sobre lo normal",
+      "oct_anom": 1.94,
+      "oct_cond": "Normal"
+    },
+    {
+      "zona": "Pacifico Centro",
+      "rio": "Chillón (Pte. Magdalena)",
+      "sept_anom": 52.78,
+      "sept_cond": "Significativamente sobre lo normal",
+      "oct_anom": 24.09,
+      "oct_cond": "Ligeramente sobre lo normal"
+    },
+    {
+      "zona": "Pacifico Centro",
+      "rio": "Rímac Chosica",
+      "sept_anom": 19.58,
+      "sept_cond": "Ligeramente sobre lo normal",
+      "oct_anom": 17.2,
+      "oct_cond": "Ligeramente sobre lo normal"
+    },
+    {
+      "zona": "Pacifico Centro",
+      "rio": "Rímac San Mateo",
+      "sept_anom": -18.85,
+      "sept_cond": "Ligeramente por debajo de lo normal",
+      "oct_anom": -25.33,
+      "oct_cond": "Ligeramente por debajo de lo normal"
+    },
+    {
+      "zona": "Pacifico Centro",
+      "rio": "Lurín",
+      "sept_anom": 225.91,
+      "sept_cond": "Significativamente sobre lo normal",
+      "oct_anom": 124.93,
+      "oct_cond": "Significativamente sobre lo normal"
+    },
+    {
+      "zona": "Pacifico Centro",
+      "rio": "Mala",
+      "sept_anom": 44.81,
+      "sept_cond": "Ligeramente sobre lo normal",
+      "oct_anom": 17.05,
+      "oct_cond": "Ligeramente sobre lo normal"
+    },
+    {
+      "zona": "Pacifico Centro",
+      "rio": "Cañete",
+      "sept_anom": 36.96,
+      "sept_cond": "Ligeramente sobre lo normal",
+      "oct_anom": 23.56,
+      "oct_cond": "Ligeramente sobre lo normal"
+    },
+    {
+      "zona": "Pacifico Centro",
+      "rio": "San Juan Conta",
+      "sept_anom": 102.73,
+      "sept_cond": "Significativamente sobre lo normal",
+      "oct_anom": 67.21,
+      "oct_cond": "Significativamente sobre lo normal"
+    },
+    {
+      "zona": "Pacifico Centro",
+      "rio": "Pisco",
+      "sept_anom": 82.21,
+      "sept_cond": "Significativamente sobre lo normal",
+      "oct_anom": 152.17,
+      "oct_cond": "Significativamente sobre lo normal"
+    },
+    {
+      "zona": "Pacifico Sur",
+      "rio": "Ica",
+      "sept_anom": 278.29,
+      "sept_cond": "Significativamente sobre lo normal",
+      "oct_anom": 34.33,
+      "oct_cond": "Ligeramente sobre lo normal"
+    },
+    {
+      "zona": "Pacifico Sur",
+      "rio": "Acarí",
+      "sept_anom": -7.43,
+      "sept_cond": "Normal",
+      "oct_anom": -31.6,
+      "oct_cond": "Ligeramente por debajo de lo normal"
+    },
+    {
+      "zona": "Pacifico Sur",
+      "rio": "Yauca",
+      "sept_anom": 10.16,
+      "sept_cond": "Normal",
+      "oct_anom": -13.98,
+      "oct_cond": "Normal"
+    },
+    {
+      "zona": "Pacifico Sur",
+      "rio": "Ocoña",
+      "sept_anom": 3.22,
+      "sept_cond": "Normal",
+      "oct_anom": -4.25,
+      "oct_cond": "Normal"
+    },
+    {
+      "zona": "Pacifico Sur",
+      "rio": "Camaná",
+      "sept_anom": 26.7,
+      "sept_cond": "Ligeramente sobre lo normal",
+      "oct_anom": 23.04,
+      "oct_cond": "Ligeramente sobre lo normal"
+    },
+    {
+      "zona": "Pacifico Sur",
+      "rio": "Pte. El diablo Chili",
+      "sept_anom": 7.29,
+      "sept_cond": "Normal",
+      "oct_anom": 0.08,
+      "oct_cond": "Normal"
+    },
+    {
+      "zona": "Pacifico Sur",
+      "rio": "Tingo Grande Chili",
+      "sept_anom": 18.14,
+      "sept_cond": "Ligeramente sobre lo normal",
+      "oct_anom": 28.5,
+      "oct_cond": "Ligeramente sobre lo normal"
+    },
+    {
+      "zona": "Pacifico Sur",
+      "rio": "Tambo La Pascana",
+      "sept_anom": 17.88,
+      "sept_cond": "Ligeramente sobre lo normal",
+      "oct_anom": 24.01,
+      "oct_cond": "Ligeramente sobre lo normal"
+    },
+    {
+      "zona": "Pacifico Sur",
+      "rio": "Otora",
+      "sept_anom": 39.81,
+      "sept_cond": "Ligeramente sobre lo normal",
+      "oct_anom": 21.3,
+      "oct_cond": "Ligeramente sobre lo normal"
+    },
+    {
+      "zona": "Pacifico Sur",
+      "rio": "Tumilaca",
+      "sept_anom": -6.42,
+      "sept_cond": "Normal",
+      "oct_anom": -15.98,
+      "oct_cond": "Ligeramente por debajo de lo normal"
+    },
+    {
+      "zona": "Pacifico Sur",
+      "rio": "Locumba (Pte. Viejo)",
+      "sept_anom": 23.35,
+      "sept_cond": "Ligeramente sobre lo normal",
+      "oct_anom": 25.15,
+      "oct_cond": "Ligeramente sobre lo normal"
+    },
+    {
+      "zona": "Pacifico Sur",
+      "rio": "Sama (La Tranca)",
+      "sept_anom": 24.09,
+      "sept_cond": "Ligeramente sobre lo normal",
+      "oct_anom": 47.63,
+      "oct_cond": "Ligeramente sobre lo normal"
+    },
+    {
+      "zona": "Pacifico Sur",
+      "rio": "Sama (Coruca)",
+      "sept_anom": 46.73,
+      "sept_cond": "Ligeramente sobre lo normal",
+      "oct_anom": -14.8,
+      "oct_cond": "Normal"
+    },
+    {
+      "zona": "Pacifico Sur",
+      "rio": "Caplina",
+      "sept_anom": 56.79,
+      "sept_cond": "Significativamente sobre lo normal",
+      "oct_anom": 59.1,
+      "oct_cond": "Significativamente sobre lo normal"
+    },
+    {
+      "zona": "Titicaca",
+      "rio": "Huancané",
+      "sept_anom": 10.49,
+      "sept_cond": "Normal",
+      "oct_anom": -21.62,
+      "oct_cond": "Ligeramente por debajo de lo normal"
+    },
+    {
+      "zona": "Titicaca",
+      "rio": "Ramis",
+      "sept_anom": -22.06,
+      "sept_cond": "Ligeramente por debajo de lo normal",
+      "oct_anom": -44.49,
+      "oct_cond": "Ligeramente por debajo de lo normal"
+    },
+    {
+      "zona": "Titicaca",
+      "rio": "Coata",
+      "sept_anom": 75.48,
+      "sept_cond": "Significativamente sobre lo normal",
+      "oct_anom": 29.65,
+      "oct_cond": "Ligeramente sobre lo normal"
+    },
+    {
+      "zona": "Titicaca",
+      "rio": "Ilave",
+      "sept_anom": 7.61,
+      "sept_cond": "Normal",
+      "oct_anom": 1.64,
+      "oct_cond": "Normal"
+    },
+    {
+      "zona": "Titicaca",
+      "rio": "Lampa",
+      "sept_anom": 83.78,
+      "sept_cond": "Significativamente sobre lo normal",
+      "oct_anom": 33.02,
+      "oct_cond": "Ligeramente sobre lo normal"
+    },
+    {
+      "zona": "Titicaca",
+      "rio": "Cabanillas",
+      "sept_anom": 115.08,
+      "sept_cond": "Significativamente sobre lo normal",
+      "oct_anom": 76.76,
+      "oct_cond": "Significativamente sobre lo normal"
+    }
+  ],
+  "reservorios": [
+    {
+      "zona": "Costa - Norte",
+      "reservorio": "Poechos",
+      "fecha": "12-Oct",
+      "departamento": "Piura",
+      "capacidad_hm3": 426.3,
+      "almacenado_hm3": 286.6,
+      "pct_util": 67.2
+    },
+    {
+      "zona": "Costa - Norte",
+      "reservorio": "San Lorenzo",
+      "fecha": "12-Oct",
+      "departamento": "Piura",
+      "capacidad_hm3": 195.6,
+      "almacenado_hm3": 74.9,
+      "pct_util": 38.3
+    },
+    {
+      "zona": "Costa - Norte",
+      "reservorio": "Tinajones",
+      "fecha": "12-Oct",
+      "departamento": "Lambayeque",
+      "capacidad_hm3": 331.6,
+      "almacenado_hm3": 61.5,
+      "pct_util": 18.5
+    },
+    {
+      "zona": "Costa - Norte",
+      "reservorio": "Gallito Ciego",
+      "fecha": "12-Oct",
+      "departamento": "La Libertad",
+      "capacidad_hm3": 366.1,
+      "almacenado_hm3": 234.8,
+      "pct_util": 64.1
+    },
+    {
+      "zona": "Costa - Centro",
+      "reservorio": "Viconga",
+      "fecha": "6-Oct",
+      "departamento": "Lima",
+      "capacidad_hm3": 30.0,
+      "almacenado_hm3": 3.6,
+      "pct_util": 12.0
+    },
+    {
+      "zona": "Costa - Centro",
+      "reservorio": "Sistema Rímac",
+      "fecha": "30-Set",
+      "departamento": "Lima, Junín",
+      "capacidad_hm3": 282.4,
+      "almacenado_hm3": 173.0,
+      "pct_util": 61.3
+    },
+    {
+      "zona": "Costa - Centro",
+      "reservorio": "Choclococha",
+      "fecha": "12-Oct",
+      "departamento": "Ica",
+      "capacidad_hm3": 131.1,
+      "almacenado_hm3": 88.3,
+      "pct_util": 67.4
+    },
+    {
+      "zona": "Costa - Centro",
+      "reservorio": "Ccaracocha",
+      "fecha": "12-Oct",
+      "departamento": "Ica",
+      "capacidad_hm3": 40.0,
+      "almacenado_hm3": 29.2,
+      "pct_util": 73.0
+    },
+    {
+      "zona": "Costa - Sur",
+      "reservorio": "Condoroma",
+      "fecha": "12-Oct",
+      "departamento": "Arequipa",
+      "capacidad_hm3": 259.0,
+      "almacenado_hm3": 153.04,
+      "pct_util": 59.1
+    },
+    {
+      "zona": "Costa - Sur",
+      "reservorio": "El Pañe",
+      "fecha": "12-Oct",
+      "departamento": "Arequipa",
+      "capacidad_hm3": 97.2,
+      "almacenado_hm3": 36.32,
+      "pct_util": 37.4
+    },
+    {
+      "zona": "Costa - Sur",
+      "reservorio": "Dique Los Españoles",
+      "fecha": "12-Oct",
+      "departamento": "Arequipa",
+      "capacidad_hm3": 9.1,
+      "almacenado_hm3": 1.37,
+      "pct_util": 15.1
+    },
+    {
+      "zona": "Costa - Sur",
+      "reservorio": "Pillones",
+      "fecha": "12-Oct",
+      "departamento": "Arequipa",
+      "capacidad_hm3": 80.8,
+      "almacenado_hm3": 71.7,
+      "pct_util": 88.8
+    },
+    {
+      "zona": "Costa - Sur",
+      "reservorio": "El Fraile",
+      "fecha": "12-Oct",
+      "departamento": "Arequipa",
+      "capacidad_hm3": 127.2,
+      "almacenado_hm3": 49.92,
+      "pct_util": 39.2
+    },
+    {
+      "zona": "Costa - Sur",
+      "reservorio": "Aguada Blanca",
+      "fecha": "12-Oct",
+      "departamento": "Arequipa",
+      "capacidad_hm3": 22.1,
+      "almacenado_hm3": 13.4,
+      "pct_util": 60.6
+    },
+    {
+      "zona": "Costa - Sur",
+      "reservorio": "Chalhuanca",
+      "fecha": "12-Oct",
+      "departamento": "Arequipa",
+      "capacidad_hm3": 25.0,
+      "almacenado_hm3": 16.3,
+      "pct_util": 65.0
+    },
+    {
+      "zona": "Costa - Sur",
+      "reservorio": "Bamputañe",
+      "fecha": "12-Oct",
+      "departamento": "Arequipa",
+      "capacidad_hm3": 40.0,
+      "almacenado_hm3": 18.2,
+      "pct_util": 45.5
+    },
+    {
+      "zona": "Costa - Sur",
+      "reservorio": "Pasto Grande",
+      "fecha": "7-Oct",
+      "departamento": "Moquegua",
+      "capacidad_hm3": 200.0,
+      "almacenado_hm3": 140.0,
+      "pct_util": 70.0
+    },
+    {
+      "zona": "Costa - Sur",
+      "reservorio": "Paucarani",
+      "fecha": "7-Oct",
+      "departamento": "Tacna",
+      "capacidad_hm3": 10.5,
+      "almacenado_hm3": 4.3,
+      "pct_util": 41.0
+    },
+    {
+      "zona": "Costa - Sur",
+      "reservorio": "Laguna Aricota",
+      "fecha": "12-Oct",
+      "departamento": "Tacna",
+      "capacidad_hm3": 280.0,
+      "almacenado_hm3": 211.9,
+      "pct_util": 75.7
+    },
+    {
+      "zona": "Costa - Sur",
+      "reservorio": "Jarumas",
+      "fecha": "30-Set",
+      "departamento": "Tacna",
+      "capacidad_hm3": 13.0,
+      "almacenado_hm3": 12.5,
+      "pct_util": 96.2
+    },
+    {
+      "zona": "Sierra - Centro",
+      "reservorio": "Cuchoquesera",
+      "fecha": "27-Set",
+      "departamento": "Ayacucho",
+      "capacidad_hm3": 80.0,
+      "almacenado_hm3": 38.4,
+      "pct_util": 48.0
+    },
+    {
+      "zona": "Sierra - Centro",
+      "reservorio": "Lago Junín",
+      "fecha": "11-Oct",
+      "departamento": "Junín",
+      "capacidad_hm3": 314.7,
+      "almacenado_hm3": 123.0,
+      "pct_util": 39.1
+    },
+    {
+      "zona": "Sierra - Sur",
+      "reservorio": "Lagunillas",
+      "fecha": "30-Set",
+      "departamento": "Puno",
+      "capacidad_hm3": 585.1,
+      "almacenado_hm3": 437.0,
+      "pct_util": 74.7
+    },
+    {
+      "zona": "Sierra - Sur",
+      "reservorio": "Sibinacocha",
+      "fecha": "9-Oct",
+      "departamento": "Cusco",
+      "capacidad_hm3": 110.0,
+      "almacenado_hm3": 73.0,
+      "pct_util": 66.4
+    }
+  ]
+}

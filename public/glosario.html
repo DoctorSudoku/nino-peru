@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="es-PE" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glosario · El Niño en el Perú</title>
+<meta name="description" content="Qué significan ICEN, ONI, RONI, ENFEN, Niño 1+2 y el resto de siglas del tablero de El Niño, en lenguaje llano.">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌊</text></svg>">
+<script>
+  try {
+    var q = new URLSearchParams(location.search).get("theme");
+    var t = q || localStorage.getItem("nino-theme");
+    if (!t) t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", t);
+  } catch (e) {}
+</script>
+<style>
+  .glos-hero { padding: clamp(1.4rem, 3vw, 2.4rem) 0 1rem; border-bottom: 1px solid var(--line); }
+  .glos-hero h1 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); max-width: 22ch; }
+  .search { margin: 1.2rem 0 0; max-width: 420px; }
+  .search input {
+    width: 100%; font: inherit; font-size: .9rem; padding: .55rem .8rem;
+    border: 1px solid var(--line); border-radius: 9px;
+    background: var(--surface); color: var(--ink);
+  }
+  .search input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+  .glos-nav { display: flex; gap: .4rem; flex-wrap: wrap; margin: 1rem 0 0; }
+  .glos-nav a { font-size: .78rem; padding: .22rem .55rem; border: 1px solid var(--line); border-radius: 999px; text-decoration: none; color: var(--ink-2); background: var(--surface); }
+  .glos-nav a:hover { border-color: var(--ink-3); color: var(--ink); }
+  .glos-group { padding: 2rem 0 0; }
+  .glos-group h2 { font-size: 1.25rem; margin-bottom: .2rem; }
+  .glos-group > p { margin: 0 0 1rem; color: var(--ink-3); font-size: .84rem; }
+  .term { padding: .85rem 0; border-top: 1px solid var(--line-2); display: grid; grid-template-columns: 190px 1fr; gap: 1rem; }
+  .term:first-of-type { border-top: 1px solid var(--line); }
+  .term dt { font-weight: 700; font-size: .9rem; }
+  .term dt span { display: block; font-weight: 400; font-size: .72rem; color: var(--ink-3); margin-top: .1rem; }
+  .term dd { margin: 0; font-size: .88rem; color: var(--ink-2); }
+  .term dd b { color: var(--ink); }
+  .term mark { background: var(--accent-soft); color: var(--accent); padding: 0 2px; border-radius: 3px; }
+  .empty { padding: 2rem 0; color: var(--ink-3); display: none; }
+  @media (max-width: 620px) {
+    .term { grid-template-columns: 1fr; gap: .3rem; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#glosario">Saltar al contenido</a>
+
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <div class="brand">
+      <a class="brand-mark" href="index.html" style="text-decoration:none">El Niño · Perú</a>
+      <span class="brand-sub">Glosario</span>
+    </div>
+    <div class="topbar-actions">
+      <a class="btn" href="index.html">← Volver al tablero</a>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Cambiar tema" title="Cambiar tema">
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.6M12 18.9v2.6M2.5 12h2.6M18.9 12h2.6M5.2 5.2l1.9 1.9M16.9 16.9l1.9 1.9M18.8 5.2l-1.9 1.9M7.1 16.9l-1.9 1.9"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap glos-hero">
+    <p class="kicker">Glosario</p>
+    <h1>Las siglas, en lenguaje llano</h1>
+    <p class="lede">Todo lo que aparece en el tablero, explicado en una o dos líneas.</p>
+    <div class="search">
+      <label for="buscar" class="sr-only" style="position:absolute;left:-9999px">Buscar término</label>
+      <input id="buscar" type="search" placeholder="Buscar: ICEN, ONI, ENFEN, Niño 1+2…" autocomplete="off">
+    </div>
+    <nav class="glos-nav" id="glos-nav" aria-label="Ir a una sección"></nav>
+  </div>
+
+  <div class="wrap" id="glosario"></div>
+  <div class="wrap"><p class="empty" id="empty">No hay resultados. Prueba con otra palabra.</p></div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong>El Niño · Perú</strong> — definiciones basadas en NOAA, ENFEN y SENAMHI.</p>
+    <p><a href="index.html">Volver al tablero</a></p>
+  </div>
+</footer>
+
+<script>
+const TERMINOS = [
+  { g: "El fenómeno", items: [
+    { t: "ENOS", a: "ENSO", s: "El Niño–Oscilación del Sur", d: "El patrón climático que alterna fases cálidas y frías en el Pacífico tropical. Afecta lluvias, sequías y pesca en medio mundo." },
+    { t: "El Niño", a: "Fase cálida del ENOS", d: "Calentamiento anómalo del Pacífico central y oriental. Es el nombre de la fase cálida." },
+    { t: "El Niño costero", d: "Calentamiento anómalo solo frente a la costa de Perú y Ecuador (región Niño 1+2). Puede ocurrir sin El Niño global, como en 2017, y es el que más lluvias intensas causa en el norte peruano." },
+    { t: "La Niña", d: "Fase fría del ENOS: mar más frío de lo normal. En Perú suele asociarse a sequías en la sierra." },
+    { t: "FEN", s: "Fenómeno El Niño", d: "Sigla que usan las instituciones peruanas para referirse al conjunto del fenómeno." },
+    { t: "Episodio", d: "Un evento completo de El Niño, desde que el mar supera el umbral hasta que vuelve a la normalidad. Suele durar entre 9 y 18 meses." },
+    { t: "Anomalía", d: "Cuánto se aparta un valor de lo normal para esa fecha. +2 °C significa dos grados por encima del promedio histórico." },
+    { t: "Climatología", d: "El promedio de referencia. En este tablero se usa 1991–2020, la misma base que NOAA." },
+    { t: "Teleconexión", d: "Efecto del fenómeno en lugares lejanos: sequías en África, inviernos suaves en Norteamérica, calor en Asia." },
+  ]},
+  { g: "Los índices", items: [
+    { t: "ICEN", s: "Índice Costero El Niño", d: "Mide el calentamiento frente a la costa peruana (Niño 1+2). Es el índice oficial que usa el ENFEN para declarar El Niño costero." },
+    { t: "ICENtmp", d: "Versión en tiempo real del ICEN: mezcla lo observado con pronósticos y se corrige en el informe siguiente." },
+    { t: "ONI", s: "Oceanic Niño Index", d: "El índice internacional: promedio de tres meses en el Pacífico central (Niño 3.4). NOAA declara El Niño cuando supera +0,5 °C de forma sostenida." },
+    { t: "RONI", s: "Relative Oceanic Niño Index", d: "Igual que el ONI, pero descontando el calentamiento global de fondo. Sirve para comparar con episodios antiguos." },
+    { t: "TSM", s: "SST en inglés", d: "Temperatura superficial del mar. Es la variable que se mide en el mapa." },
+    { t: "Percentil", d: "Posición de un valor dentro del histórico. El percentil 95 significa que solo un 5 % de los meses fueron más cálidos." },
+    { t: "Categorías ENFEN", d: "Débil (0,5–1,0 °C), moderada (1,0–1,5), fuerte (1,5–2,5) y extraordinaria (más de 2,5)." },
+  ]},
+  { g: "Las regiones del Pacífico", items: [
+    { t: "Niño 1+2 (costero)", d: "Franja frente a Perú y Ecuador. Es la que define El Niño costero y la que más influye en las lluvias del norte peruano." },
+    { t: "Niño 3", d: "Pacífico oriental central (frente a Sudamérica). Intermedia entre la costa y el centro." },
+    { t: "Niño 3.4 (global)", d: "Pacífico central. Es la región del ONI y la que define El Niño global." },
+    { t: "Niño 4", d: "Pacífico occidental central, cerca de Asia. Menos usada, pero clave para el ciclo completo." },
+  ]},
+  { g: "Instituciones", items: [
+    { t: "ENFEN", s: "Estudio Nacional del Fenómeno El Niño", d: "Comisión multisectorial peruana que declara oficialmente El Niño costero. Reúne a IMARPE, SENAMHI, ANA, IGP, DIHIDRONAV, INDECI y CENEPRED. Publica un comunicado cada dos semanas." },
+    { t: "SENAMHI", d: "Servicio Nacional de Meteorología e Hidrología. Emite avisos meteorológicos y pronósticos." },
+    { t: "IMARPE", d: "Instituto del Mar del Perú. Monitorea el mar, la anchoveta y preside el ENFEN." },
+    { t: "ANA", d: "Autoridad Nacional del Agua. Mide caudales, embalses y reservorios." },
+    { t: "INDECI", d: "Instituto Nacional de Defensa Civil. Registra emergencias y coordina la respuesta." },
+    { t: "CENEPRED", d: "Centro Nacional de Estimación, Prevención y Reducción del Riesgo de Desastres. Elabora escenarios de riesgo." },
+    { t: "NOAA", d: "Agencia oceánica y atmosférica de EE. UU. Publica los índices Niño y la serie OISST." },
+    { t: "CPC", s: "Climate Prediction Center", d: "Oficina de NOAA que calcula el ONI y los índices Niño." },
+  ]},
+  { g: "Los datos", items: [
+    { t: "OISST", d: "Producto satelital de NOAA con la temperatura del mar en rejilla de 0,25°. Es la fuente del mapa y se actualiza a diario." },
+    { t: "ERSSTv5", d: "Serie histórica de temperatura del mar de NOAA, desde 1854. Es la base de los índices mensuales." },
+    { t: "ERDDAP", d: "Servicio que permite descargar datos científicos en CSV desde una URL. Así obtiene el tablero el mapa." },
+    { t: "NMME", d: "Conjunto de modelos climáticos que se usa para estimar el ICEN en tiempo real." },
+    { t: "Pentada", d: "Periodo de cinco días. Los caudales de los ríos se reportan por pentadas." },
+  ]},
+  { g: "Agua, pesca y agricultura", items: [
+    { t: "Caudal", d: "Volumen de agua que pasa por un río por segundo (m³/s). Se compara con su promedio histórico." },
+    { t: "Embalse / reservorio", d: "Depósito artificial de agua. Se mide el porcentaje de su capacidad útil almacenada." },
+    { t: "hm³", d: "Hectómetros cúbicos: mil millones de litros. Se usa para medir embalses." },
+    { t: "Anchoveta", d: "El recurso pesquero más importante del Perú. Depende de la temperatura del mar: con El Niño se aleja y se hunde." },
+    { t: "LMTCP", d: "Límite Máximo Total de Captura Permitida: la cuota de anchoveta fijada por temporada." },
+    { t: "Desembarque", d: "Toneladas de pescado descargadas en puerto. Mide el avance real de una temporada." },
+  ]},
+];
+
+const glos = document.getElementById("glosario");
+function render(filtro = "") {
+  const f = filtro.trim().toLowerCase();
+  let html = "", total = 0;
+  const nav = document.getElementById("glos-nav");
+  if (!nav.dataset.done) {
+    nav.innerHTML = TERMINOS.map((g, i) => `<a href="#g${i}">${g.g}</a>`).join("");
+    nav.dataset.done = "1";
+  }
+  TERMINOS.forEach((g, i) => {
+    const items = g.items.filter((it) =>
+      !f || (it.t + " " + (it.a || "") + " " + (it.s || "") + " " + it.d).toLowerCase().includes(f));
+    if (!items.length) return;
+    total += items.length;
+    html += `<section class="glos-group" id="g${i}"><h2>${g.g}</h2>` + items.map((it) => `
+      <dl class="term">
+        <dt>${it.t}${it.a ? `<span>${it.a}</span>` : ""}</dt>
+        <dd>${it.s ? `<b>${it.s}.</b> ` : ""}${it.d}</dd>
+      </dl>`).join("") + `</section>`;
+  });
+  glos.innerHTML = html;
+  document.getElementById("empty").style.display = total ? "none" : "block";
+}
+render();
+document.getElementById("buscar").addEventListener("input", (e) => render(e.target.value));
+
+// tema
+const btn = document.getElementById("theme-toggle");
+const sync = () => btn.setAttribute("aria-label", document.documentElement.dataset.theme === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro");
+sync();
+btn.addEventListener("click", () => {
+  const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem("nino-theme", next); } catch (e) {}
+  sync();
+});
+</script>
+</body>
+</html>

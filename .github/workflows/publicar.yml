@@ -1,0 +1,94 @@
+name: Actualizar datos y publicar
+
+on:
+  schedule:
+    - cron: "0 */3 * * *"   # UTC. En Lima: 19:00, 22:00, 01:00...
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/**"
+      - "data/curated/**"
+      - "public/**"
+      - "site.config.json"
+      - ".github/workflows/publicar.yml"
+
+permissions:
+  contents: write   # latido diario: evita que GitHub desactive el cron por inactividad
+  pages: write
+  id-token: write
+
+concurrency:
+  group: publicar
+  cancel-in-progress: false
+
+jobs:
+  construir:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      # GitHub Pages sirve en https://<dueño>.github.io/<repo>
+      SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main          # rama, no SHA suelto: hace falta para el latido
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Dependencias (PyMuPDF para los PDF del INDECI)
+        run: python -m pip install --quiet --target .pylibs pymupdf
+
+      - name: Construir los datos
+        run: python scripts/build.py
+
+      - name: Verificar frescura
+        run: python scripts/check_frescura.py
+
+      - name: Comprobar que el sitio está completo
+        run: |
+          test -f public/index.html || (echo "Falta public/index.html" && exit 1)
+          python - <<'PY'
+          import json, pathlib
+          for f in ("enso", "enfen", "sst", "pesca", "pronostico"):
+              ruta = pathlib.Path("public/data") / f"{f}.json"
+              assert ruta.exists(), f"Falta {ruta}"
+              json.loads(ruta.read_text(encoding="utf-8"))
+          print("Datos válidos.")
+          PY
+
+      # GitHub desactiva los workflows programados tras 60 días sin commits.
+      # Este latido diario mantiene el repositorio "activo". No dispara el workflow
+      # porque la ruta no está en los filtros de `push`.
+      - name: Latido diario
+        run: |
+          HOY=$(date -u +%Y-%m-%d)
+          mkdir -p .github
+          if [ ! -f .github/latido.txt ] || [ "$(cat .github/latido.txt)" != "$HOY" ]; then
+            echo "$HOY" > .github/latido.txt
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add .github/latido.txt
+            git commit -m "latido: $HOY"
+            git push origin HEAD:main
+          else
+            echo "Latido ya registrado hoy."
+          fi
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  desplegar:
+    needs: construir
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

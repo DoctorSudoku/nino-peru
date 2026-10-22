@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="es-PE" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>El Niño en el Perú · Tablero de seguimiento</title>
+<meta name="description" content="Qué está pasando con El Niño frente al Perú y en el mundo: temperatura del mar, índices oficiales, pronóstico del ENFEN e impactos. Datos abiertos y verificables.">
+<meta name="theme-color" content="#fbfaf7">
+<meta property="og:title" content="El Niño en el Perú · Tablero de seguimiento">
+<meta property="og:description" content="Temperatura del mar, índices oficiales y pronóstico del ENFEN, actualizados.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="assets/leaflet/leaflet.css">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌊</text></svg>">
+<script>
+  // aplica el tema guardado antes del primer pintado (evita el destello)
+  try {
+    var q = new URLSearchParams(location.search).get("theme");
+    var t = q || localStorage.getItem("nino-theme");
+    if (!t) t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", t);
+  } catch (e) {}
+</script>
+<script src="assets/leaflet/leaflet.js" defer></script>
+<script src="assets/echarts.min.js" defer></script>
+<script src="assets/app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <div class="brand">
+      <span class="brand-mark">El Niño · Perú</span>
+      <span class="beta" title="Versión en pruebas">beta</span>
+      <span class="brand-sub">Tablero de seguimiento</span>
+    </div>
+    <span id="alert-pill" class="pill pill-alert pill-live">
+      <span class="pill-dot" aria-hidden="true"></span>
+      <span id="alert-text">Cargando…</span>
+    </span>
+    <div class="topbar-actions">
+      <a class="nav-link" href="glosario.html">Glosario</a>
+      <span class="topbar-meta">Datos al <strong id="top-cutoff">—</strong></span>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Cambiar a modo oscuro" title="Cambiar tema">
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.6M12 18.9v2.6M2.5 12h2.6M18.9 12h2.6M5.2 5.2l1.9 1.9M16.9 16.9l1.9 1.9M18.8 5.2l-1.9 1.9M7.1 16.9l-1.9 1.9"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="contenido">
+
+  <!-- ============================================================== PORTADA -->
+  <div class="wrap hero">
+    <div class="hero-text">
+      <p class="kicker">El Niño costero · octubre 2026</p>
+      <h1 id="hero-title">El mar frente al Perú está <em>5,2 °C</em> sobre lo normal</h1>
+      <p class="lede" id="hero-lede">El ENFEN mantiene la alerta máxima: El Niño costero es <strong>extraordinario</strong> y seguiría así hasta enero de 2027.</p>
+      <p class="byline">Datos: <a href="https://enfen.imarpe.gob.pe/" target="_blank" rel="noopener">ENFEN</a> · <a href="https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21NrtAgg" target="_blank" rel="noopener">NOAA</a></p>
+    </div>
+
+    <div class="card map-card">
+      <div class="map-head">
+        <div class="map-title">
+          <strong>Temperatura del mar</strong>
+          <span id="map-date">—</span>
+        </div>
+        <div class="seg" role="group" aria-label="Qué mostrar en el mapa">
+          <button type="button" data-mapvar="anom" aria-pressed="true">Anomalía</button>
+          <button type="button" data-mapvar="sst" aria-pressed="false">Absoluta</button>
+        </div>
+      </div>
+      <div id="map" class="map" role="application" aria-label="Mapa de temperatura superficial del mar frente al Perú"></div>
+      <div class="map-foot">
+        <div class="legend" id="map-legend"></div>
+        <button class="btn btn-ghost" type="button" id="map-zoom">Ver todo el Pacífico →</button>
+      </div>
+    </div>
+
+    <div class="kpis" id="kpis" aria-label="Indicadores clave"></div>
+  </div>
+
+  <!-- ============================================================== NOTICIAS -->
+  <section class="block-tight" id="noticias" aria-labelledby="h-noticias">
+    <div class="wrap">
+      <div class="block-head">
+        <div>
+          <h2 id="h-noticias">Hoy en los medios</h2>
+          <p>Tres titulares de prensa peruana relacionados con el fenómeno.</p>
+        </div>
+      </div>
+      <div class="news-grid" id="news-grid"></div>
+    </div>
+  </section>
+
+  <!-- ================================================================ ENFEN -->
+  <section class="block-tight" aria-labelledby="h-enfen-flash">
+    <div class="wrap">
+      <div class="card enfen-band">
+        <div class="enfen-band-main">
+          <span class="pill pill-alert">ENFEN</span>
+          <div>
+            <h2 id="h-enfen-flash"><a id="enfen-link" href="https://enfen.imarpe.gob.pe/" target="_blank" rel="noopener">Comunicado oficial</a></h2>
+            <p id="enfen-summary">—</p>
+          </div>
+        </div>
+        <div class="enfen-band-side">
+          <p class="enfen-next">Próximo: <strong id="enfen-next">—</strong></p>
+          <a class="btn" id="enfen-btn" href="https://enfen.imarpe.gob.pe/comunicados/" target="_blank" rel="noopener">Leer el comunicado ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================== INCIDENCIAS -->
+  <section class="block" id="incidencias" aria-labelledby="h-incidencias">
+    <div class="wrap">
+      <div class="block-head">
+        <div>
+          <h2 id="h-incidencias">Incidencias recientes</h2>
+          <p id="inc-sub">Reportes de emergencia del INDECI de las últimas horas.</p>
+        </div>
+        <div class="block-tools">
+          <a class="btn" href="https://portal.indeci.gob.pe/emergencias/" target="_blank" rel="noopener">Ver todos ↗</a>
+        </div>
+      </div>
+      <div class="inc-grid">
+        <div class="card">
+          <div id="map-inc" class="map-inc" role="application" aria-label="Mapa de incidencias recientes por departamento"></div>
+          <div class="inc-legend" id="inc-legend"></div>
+        </div>
+        <div class="card">
+          <p class="doclist-title">Últimos reportes</p>
+          <div class="inc-list" id="inc-list"></div>
+        </div>
+      </div>
+
+      <div class="card danos" id="danos-card">
+        <div class="danos-head">
+          <h3>Daños reportados</h3>
+          <span class="pill pill-neutral" id="danos-cobertura">—</span>
+        </div>
+        <div class="danos-kpis" id="danos-kpis"></div>
+        <div class="table-wrap">
+          <table id="table-danos">
+            <caption>Consolidado por departamento. Un evento puede tener varios reportes: se toma el más reciente.</caption>
+            <thead>
+              <tr>
+                <th scope="col">Departamento</th><th scope="col">Eventos</th>
+                <th scope="col">Damnificados</th><th scope="col">Afectados</th>
+                <th scope="col">Viviendas destruidas</th><th scope="col">Ha de cultivo</th><th scope="col">Ha de cobertura</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <p class="chart-note" id="danos-note"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ PRONÓSTICO -->
+  <section class="block" id="clima" aria-labelledby="h-clima">
+    <div class="wrap">
+      <div class="block-head">
+        <div>
+          <h2 id="h-clima">Pronóstico por ciudad</h2>
+          <p>Próximos cinco días. No reemplaza los avisos oficiales del SENAMHI.</p>
+        </div>
+        <div class="block-tools">
+          <a class="btn" href="https://www.senamhi.gob.pe/?p=aviso-meteorologico" target="_blank" rel="noopener">Avisos SENAMHI ↗</a>
+        </div>
+      </div>
+      <div class="forecast-grid" id="forecast-ciudades"></div>
+      <p class="chart-note">Fuente: Open-Meteo (modelos ECMWF, GFS e ICON). El SENAMHI no ofrece API pública de pronóstico por ciudad.</p>
+    </div>
+  </section>
+
+  <!-- ================================================================ ESTADO -->
+  <section class="block" id="estado" aria-labelledby="h-estado">
+    <div class="wrap">
+      <div class="block-head">
+        <div>
+          <h2 id="h-estado">Los tres índices</h2>
+          <p>El ICEN mide la costa peruana. El ONI, el Pacífico central.</p>
+        </div>
+        <div class="block-tools">
+          <button class="btn" type="button" data-export="indices">CSV</button>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div id="chart-indices" class="chart" role="img" aria-label="ICEN, RONI y ONI de los últimos 13 meses"></div>
+          <p class="chart-note" id="note-indices"></p>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table id="table-indices">
+              <caption>Últimos 13 meses, en °C. En cursiva, estimación provisional.</caption>
+              <thead><tr><th scope="col">Mes</th><th scope="col">ICEN</th><th scope="col">RONI</th><th scope="col">ONI</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="card weekly-card">
+        <div class="table-wrap">
+          <table id="table-weekly">
+            <caption>El mar, semana a semana (OISST). ENFEN, Tabla 2.</caption>
+            <thead><tr><th scope="col">Semana</th><th scope="col">Niño 1+2 (costero)</th><th scope="col">Anomalía</th><th scope="col">Niño 3.4 (global)</th><th scope="col">Anomalía</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================= HISTÓRICO -->
+  <section class="block" id="historico" aria-labelledby="h-historico">
+    <div class="wrap">
+      <div class="block-head">
+        <div>
+          <h2 id="h-historico">Comparativo histórico</h2>
+          <p>El FEN en curso versus otros grandes episodios.</p>
+        </div>
+        <div class="block-tools" role="group" aria-label="Elegir región">
+          <button class="btn" type="button" data-region="oni" aria-pressed="true">Pacífico central</button>
+          <button class="btn" type="button" data-region="n12">Costa peruana</button>
+        </div>
+      </div>
+      <div class="card">
+        <div id="chart-history" class="chart-tall" role="img" aria-label="Serie histórica de anomalías del mar desde 1950"></div>
+        <p class="chart-note" id="note-history"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ COMPARADOR -->
+  <section class="block" id="comparador" aria-labelledby="h-comparador">
+    <div class="wrap">
+      <div class="block-head">
+        <div>
+          <h2 id="h-comparador">Mes a mes con los grandes</h2>
+          <p>Alineados por el mes en que empezó cada episodio.</p>
+        </div>
+        <div class="block-tools"><span class="pill pill-neutral" id="compare-badge">—</span></div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div id="chart-compare" class="chart" role="img" aria-label="Comparación con episodios históricos"></div>
+          <p class="chart-note">ONI por temporada. La línea gruesa es el episodio en curso.</p>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table id="table-episodes">
+              <caption>Episodios con ONI ≥ +0,5 °C por 5 temporadas o más.</caption>
+              <thead><tr><th scope="col">Episodio</th><th scope="col">Duración</th><th scope="col">Pico</th><th scope="col">Cuándo</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ PRONÓSTICO -->
+  <section class="block" id="pronostico" aria-labelledby="h-pronostico">
+    <div class="wrap">
+      <div class="block-head">
+        <div>
+          <h2 id="h-pronostico">Qué viene</h2>
+          <p>Escenario central del último informe del ENFEN.</p>
+        </div>
+      </div>
+      <div class="forecast" id="forecast"></div>
+      <div class="timeline" id="timeline" aria-label="Horizonte del pronóstico"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================ TERRITORIO -->
+  <section class="block" id="territorio" aria-labelledby="h-territorio">
+    <div class="wrap">
+      <div class="block-head">
+        <div>
+          <h2 id="h-territorio">Agua y territorio</h2>
+          <p id="territory-summary"></p>
+        </div>
+        <div class="block-tools">
+          <a class="btn" href="https://www.senamhi.gob.pe/?p=monitoreo-hidrologico" target="_blank" rel="noopener">SENAMHI ↗</a>
+        </div>
+      </div>
+
+      <div class="grid-agua">
+        <div class="card agua-card">
+          <h3>Ríos de la costa</h3>
+          <p class="agua-sub">Anomalía del caudal al 10 de octubre de 2026.</p>
+          <div id="chart-rios" class="chart-md" role="img" aria-label="Anomalía de caudal por río"></div>
+          <p class="chart-note">Sobre 0: más agua de lo normal. Fuente: ENFEN, Tabla 4 (p. 27).</p>
+        </div>
+
+        <div class="card agua-card">
+          <h3>Reservorios</h3>
+          <p class="agua-sub" id="reservorios-sub">Almacenamiento útil por embalse.</p>
+          <div id="chart-reservorios" class="chart-md" role="img" aria-label="Porcentaje de almacenamiento útil por reservorio"></div>
+          <p class="chart-note">Fuente: ENFEN, Tabla 5 (p. 33), con datos de ANA.</p>
+        </div>
+
+        <div class="card agua-card stat-card">
+          <h3>Lago Titicaca</h3>
+          <p class="stat-value" id="titicaca-value">—</p>
+          <p class="stat-text" id="titicaca-text"></p>
+        </div>
+
+        <div class="card agua-card stat-card">
+          <h3>Lluvias en la sierra sur</h3>
+          <p class="stat-value" id="lluvias-value">—</p>
+          <p class="stat-text" id="lluvias-text"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== SECTORES -->
+  <section class="block" id="sectores" aria-labelledby="h-sectores">
+    <div class="wrap">
+      <div class="block-head">
+        <div>
+          <h2 id="h-sectores">Agro y pesca</h2>
+          <p>Los dos sectores que dependen del agua. Cobertura parcial: falta la serie económica.</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card panel">
+          <div class="panel-head">
+            <h3>Pesca · anchoveta</h3>
+            <span class="pill pill-ok">Verificado</span>
+          </div>
+          <div class="pesca-stats" id="pesca-stats"></div>
+          <div id="chart-pesca" class="chart-xs" role="img" aria-label="Desembarques mensuales de anchoveta"></div>
+          <div class="progress" role="img" aria-label="Avance de la cuota sur de anchoveta">
+            <div class="progress-bar" id="pesca-bar"></div>
+          </div>
+          <p class="chart-note" id="pesca-note"></p>
+          <ul class="mini-list" id="pesca-list"></ul>
+          <div class="season" id="pesca-season"></div>
+        </div>
+
+        <div class="card panel">
+          <div class="panel-head">
+            <h3>Agricultura · agua para riego</h3>
+            <span class="pill pill-warn">Parcial</span>
+          </div>
+          <div id="chart-agro" class="chart-sm" role="img" aria-label="Almacenamiento de los reservorios agrícolas"></div>
+          <p class="chart-note" id="agro-note"></p>
+        </div>
+      </div>
+
+      <details class="method">
+        <summary>Qué falta para completar este panel</summary>
+        <div id="roadmap"></div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ============================================================ COMUNICADOS -->
+  <section class="block" id="comunicados" aria-labelledby="h-comunicados">
+    <div class="wrap">
+      <div class="block-head">
+        <div>
+          <h2 id="h-comunicados">Comunicados del ENFEN</h2>
+          <p>Se actualiza solo cuando aparece uno nuevo.</p>
+        </div>
+        <div class="block-tools">
+          <a class="btn" href="https://enfen.imarpe.gob.pe/comunicados/" target="_blank" rel="noopener">Archivo completo ↗</a>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <p class="doclist-title">Comunicados oficiales</p>
+          <div class="doclist" id="docs-comunicados"></div>
+        </div>
+        <div class="card">
+          <p class="doclist-title">Informes técnicos</p>
+          <div class="doclist" id="docs-informes"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ FUENTES -->
+  <section class="block" id="fuentes" aria-labelledby="h-fuentes">
+    <div class="wrap">
+      <div class="block-head">
+        <div>
+          <h2 id="h-fuentes">Fuentes</h2>
+          <p>Qué se descarga solo y qué se transcribe a mano.</p>
+        </div>
+      </div>
+      <div class="card table-wrap">
+        <table class="sources-table" id="table-sources">
+          <caption>Estado en la última ejecución.</caption>
+          <thead><tr><th scope="col">Fuente</th><th scope="col">Aporta</th><th scope="col">Frecuencia</th><th scope="col">Estado</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <details class="method">
+        <summary>Cómo leer estos datos</summary>
+        <div>
+          <ul>
+            <li><strong>Dos tipos de dato.</strong> NOAA y la lista de documentos del ENFEN se descargan solos. Las cifras del informe del ENFEN se transcriben a mano, con página citada.</li>
+            <li><strong>ICEN no es ONI.</strong> El ICEN mide la costa peruana; el ONI, el Pacífico central. En 2017 el Perú tuvo un Niño costero extraordinario con un ONI casi neutro.</li>
+            <li><strong>Provisional.</strong> Los valores marcados <em>tmp</em> mezclan observación y pronóstico; se revisan al informe siguiente.</li>
+            <li><strong>Rezago.</strong> El archivo mensual de NOAA llega a jun-2026; el ONI, a JAS-2026; el mapa, a ayer.</li>
+          </ul>
+          <p><a href="glosario.html">Glosario de siglas y términos →</a></p>
+          <p class="downloads">Descargar:
+            <a href="data/enso.json" download>enso.json</a> ·
+            <a href="data/enfen.json" download>enfen.json</a> ·
+            <a href="data/sst.json" download>sst.json</a> ·
+            <a href="data/meta.json" download>meta.json</a>
+          </p>
+        </div>
+      </details>
+
+      <details class="method">
+        <summary>Cómo citar</summary>
+        <div>
+          <p><strong>Tablero El Niño Perú.</strong> NOAA CPC, NOAA OISST y Comisión Multisectorial ENFEN (Informe Técnico N° 18, 13 oct 2026). Consultado el <span id="cite-date">—</span>.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <p class="credit">Una iniciativa de <strong>Grupo Evidencia</strong> / <strong>Media Lamb</strong></p>
+      <p>Prototipo abierto. Datos de NOAA, ENFEN e INDECI.</p>
+      <p class="foot-nav"><a href="glosario.html">Glosario</a> · <a href="embebibles.html">Embebibles</a> · <a href="api.html">API</a> · <a href="index.html#fuentes">Fuentes</a></p>
+    </div>
+    <div>
+      <p>Actualizado: <span id="foot-built">—</span></p>
+      <p>Próximo comunicado: <span id="foot-next">—</span></p>
+    </div>
+  </div>
+</footer>
+
+<noscript>
+  <div class="wrap" style="padding:2rem 0">
+    <p>Este tablero necesita JavaScript. Los datos crudos están en <code>data/*.json</code>.</p>
+  </div>
+</noscript>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

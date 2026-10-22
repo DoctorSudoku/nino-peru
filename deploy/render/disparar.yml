@@ -1,0 +1,23 @@
+# Render: dispara un nuevo build cada 3 horas mediante el Deploy Hook.
+# Copiar a .github/workflows/ y definir el secreto RENDER_DEPLOY_HOOK
+# (Render → el sitio → Settings → Deploy Hook).
+
+name: Actualizar datos en Render
+
+on:
+  schedule:
+    - cron: "0 */3 * * *"
+  workflow_dispatch:
+
+jobs:
+  disparar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Llamar al deploy hook
+        run: |
+          if [ -z "${{ secrets.RENDER_DEPLOY_HOOK }}" ]; then
+            echo "::error::Falta el secreto RENDER_DEPLOY_HOOK"
+            exit 1
+          fi
+          curl -fsS -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+          echo "Build disparado en Render."
