@@ -80,6 +80,11 @@ jobs:
         run: |
           HOY=$(date -u +%Y-%m-%d)
           mkdir -p .github
+          # Solo los lunes: alcanza para no llegar a los 60 días y ensucia menos el historial
+          if [ "$(date -u +%u)" != "1" ]; then
+            echo "El latido solo se registra los lunes."
+            exit 0
+          fi
           if [ ! -f .github/latido.txt ] || [ "$(cat .github/latido.txt)" != "$HOY" ]; then
             echo "$HOY" > .github/latido.txt
             git config user.name "github-actions[bot]"
