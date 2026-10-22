@@ -929,8 +929,13 @@ function renderSources(meta) {
    Noticias e incidencias
    ====================================================================== */
 
+const TIPO_EMOJI = {
+  "Lluvias": "🌧", "Inundación": "🌊", "Movimiento de tierra": "⛰", "Incendio forestal": "🔥",
+  "Vientos": "💨", "Frío": "❄", "Sequía": "☀", "Granizo": "🧊",
+};
+
 const TIPO_COLOR = {
-  "Lluvias": "#2a6f9e",
+  "Lluvias": "#2a6f9e", "Inundación": "#1b7f9e",
   "Movimiento de tierra": "#8a5a00",
   "Incendio forestal": "#d9502b",
   "Vientos": "#6d7683",
@@ -956,12 +961,19 @@ function renderNoticias(data) {
     el.innerHTML = `<p class="chart-note">No se encontraron titulares relacionados en la última ejecución.</p>`;
     return;
   }
-  el.innerHTML = data.items.map((n) => `
+  const etiqueta = { economia: ["Economía", "tag-warm1"], desastre: ["Clima y desastres", "tag-cold"] };
+  el.innerHTML = data.items.map((n) => {
+    const [texto, clase] = etiqueta[n.tema] || [];
+    return `
     <a class="card news-card" href="${n.url}" target="_blank" rel="noopener">
-      <span class="news-medio">${n.medio}</span>
+      <span class="news-top">
+        <span class="news-medio">${n.medio}</span>
+        ${texto ? `<span class="tag ${clase}">${texto}</span>` : ""}
+      </span>
       <span class="news-title">${n.titulo}</span>
       <span class="news-date">${relTime(n.fecha)}</span>
-    </a>`).join("");
+    </a>`;
+  }).join("");
 }
 
 const ETIQUETA_DANO = {
@@ -1021,9 +1033,15 @@ function renderIncidencias(data, danos) {
   deps.forEach((d) => {
     const principal = Object.entries(d.tipos).sort((a, b) => b[1] - a[1])[0][0];
     const color = TIPO_COLOR[principal] || "#888";
-    const r = 7 + Math.sqrt(d.total) * 4;
-    const m = L.circleMarker([d.lat, d.lon], {
-      radius: r, color, weight: 2, fillColor: color, fillOpacity: .55,
+    const emoji = TIPO_EMOJI[principal] || "•";
+    const badge = d.total > 1 ? `<span class="inc-count">${d.total}</span>` : "";
+    const m = L.marker([d.lat, d.lon], {
+      icon: L.divIcon({
+        className: "inc-icon",
+        html: `<div class="inc-pin" style="--c:${color}"><span>${emoji}</span>${badge}</div>`,
+        iconSize: [34, 34], iconAnchor: [17, 17],
+      }),
+      title: d.departamento,
     }).addTo(map);
     const detalle = Object.entries(d.tipos).map(([t, n]) => `${n} ${t.toLowerCase()}`).join(" · ");
     m.bindTooltip(`<strong>${d.departamento}</strong><br>${detalle}`, { direction: "top", offset: [0, -4] });
@@ -1042,13 +1060,13 @@ function renderDanos(data) {
     `${data.items.filter((i) => !i.sin_datos).length} de ${data.items.length} reportes traen cifras`;
 
   const kpis = [
-    { l: "Damnificados", v: nf(0).format(t.personas_damnificadas || 0) },
-    { l: "Personas afectadas", v: nf(0).format(t.personas_afectadas || 0) },
-    { l: "Viviendas destruidas", v: nf(0).format(t.viviendas_destruidas || 0) },
-    { l: "Hectáreas de cultivo", v: nf(0).format(ha) },
+    { l: "Damnificados", v: nf(0).format(t.personas_damnificadas || 0), i: "👤" },
+    { l: "Personas afectadas", v: nf(0).format(t.personas_afectadas || 0), i: "👥" },
+    { l: "Viviendas destruidas", v: nf(0).format(t.viviendas_destruidas || 0), i: "🏠" },
+    { l: "Hectáreas de cultivo", v: nf(0).format(ha), i: "🌱" },
   ];
   $("#danos-kpis").innerHTML = kpis.map((k) => `
-    <div class="danos-kpi"><div class="v">${k.v}</div><div class="l">${k.l}</div></div>`).join("");
+    <div class="danos-kpi"><div class="v">${k.v}</div><div class="l"><span aria-hidden="true">${k.i}</span> ${k.l}</div></div>`).join("");
 
   const conDatos = (data.por_departamento || []).some((d) =>
     (d.personas_damnificadas || 0) + (d.personas_afectadas || 0) + (d.viviendas_destruidas || 0) +

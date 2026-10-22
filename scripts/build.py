@@ -666,7 +666,8 @@ DEPTO_DISPLAY = {
 }
 
 TIPOS = [
-    ("Lluvias", ["LLUVIAS INTENSAS", "PRECIPITACIONES", "INUNDACION", "DESBORDE", "LLUVIA"]),
+    ("Lluvias", ["LLUVIAS INTENSAS", "PRECIPITACIONES", "LLUVIA"]),
+    ("Inundación", ["INUNDACION", "DESBORDE", "DESBORDA", "ANIEGO"]),
     ("Movimiento de tierra", ["HUAICO", "DESLIZAMIENTO", "DERRUMBE", "ALUVION", "REPTACION"]),
     ("Incendio forestal", ["INCENDIO FORESTAL"]),
     ("Vientos", ["VIENTOS FUERTES", "VIENTO", "TORMENTA"]),
@@ -732,59 +733,335 @@ def build_incidencias() -> dict:
 
 
 # --------------------------------------------------------------------- NOTICIAS
-FEN_FUERTE = ["EL NIÑO", "FENOMENO EL NIÑO", "ENFEN", "FEN ", "SENAMHI", "COEN", "INDECI"]
-FEN_MEDIO = ["LLUVIAS", "HUAICO", "INUNDACION", "DESBORDE", "SEQUIA", "INCENDIO FORESTAL",
-             "HELADA", "FRIAJE", "OLA DE CALOR", "DESLIZAMIENTO", "GRANIZADA"]
-FEN_ZONA = ["PIURA", "TUMBES", "LAMBAYEQUE", "LA LIBERTAD", "ANCASH", "LIMA", "PUNO", "CUSCO",
-            "AMAZONAS", "SAN MARTIN", "LORETO", "UCAYALI", "CAJAMARCA"]
-
 FEEDS_PRENSA = [
     ("RPP Noticias", "https://rpp.pe/rss"),
     ("Agencia Andina", "https://andina.pe/agencia/rss.aspx"),
 ]
 
+# Titulares que no aportan nada al tablero (pronósticos diarios, farándula, deportes).
+NEWS_BLOQUEO = [
+    "PRONOSTICO DEL CLIMA", "PRONOSTICO DEL TIEMPO", "CLIMA HOY", "EL CLIMA EN",
+    "TEMPERATURA HOY", "HOROSCOPO", "SORTEO", "FUTBOL", "PERU VS", "LIGA 1",
+    "ESPECTACULOS", "FARANDULA", "ASESINATO", "CRIMEN",
+]
+
+# Sin al menos una de estas, el titular no habla del fenómeno.
+NEWS_ANCLA = [
+    "EL NIÑO", "FENOMENO", "ENFEN", "LLUVIA", "PRECIPITACION", "INUNDACION", "DESBORDE",
+    "HUAICO", "SEQUIA", "HELADA", "FRIAJE", "GRANIZADA", "VIENTOS FUERTES",
+]
+
+# Pesos: lo económico y las medidas de gobierno mandan, como pidió el equipo editorial.
+NEWS_PESOS = {
+    "FENOMENO DE EL NIÑO": 4, "FENOMENO EL NIÑO": 4, "EL NIÑO COSTERO": 4,
+    "EL NIÑO": 3, "ENFEN": 3,
+    "ESTADO DE EMERGENCIA": 5, "DECRETO DE URGENCIA": 5, "MINISTRO DE ECONOMIA": 5, "MEF": 4,
+    "MEDIDAS": 2, "BONO": 4, "MILLONES": 3, "PRESUPUESTO": 3, "INVERSION": 3, "PBI": 4,
+    "INFLACION": 4, "PRECIOS": 3, "PERDIDAS": 4, "CREDITO": 3, "RECONSTRUCCION": 4,
+    "AGRO": 3, "PESCA": 3, "EXPORTACION": 3, "ECONOM": 3, "TRIBUTAR": 3,
+    "LLUVIA": 4, "PRECIPITACION": 4, "DESBORDE": 4, "INUNDACION": 4, "HUAICO": 4,
+    "DESLIZAMIENTO": 3, "SEQUIA": 4, "HELADA": 3, "FRIAJE": 3, "GRANIZADA": 2,
+    "VIENTOS FUERTES": 3, "EMERGENCIA": 2, "DANO": 2, "AFECTAD": 2, "ANIEGO": 2,
+    "PIURA": 1, "TUMBES": 1, "LAMBAYEQUE": 1, "LA LIBERTAD": 1, "ANCASH": 1,
+    "PUNO": 1, "CUSCO": 1, "AMAZONAS": 1, "SAN MARTIN": 1, "LORETO": 1, "CAJAMARCA": 1,
+}
+
+NEWS_ECON = ["ECONOM", "MEF", "BONO", "MILLONES", "PRESUPUESTO", "INVERSION", "PBI",
+             "INFLACION", "PRECIOS", "PERDIDAS", "CREDITO", "RECONSTRUCCION", "AGRO",
+             "PESCA", "EXPORTACION", "TRIBUTAR", "MEDIDAS"]
+NEWS_DESA = ["LLUVIA", "PRECIPITACION", "DESBORDE", "INUNDACION", "HUAICO", "DESLIZAMIENTO",
+             "SEQUIA", "HELADA", "FRIAJE", "GRANIZADA", "VIENTOS FUERTES", "EMERGENCIA",
+             "DANO", "ANIEGO"]
+
+PALABRAS_VACIAS = {"PARA", "DESDE", "ESTE", "ENTRE", "SOBRE", "CONTRA", "PORQUE",
+                   "CUANDO", "DONDE", "TRAS", "SERA", "ESTA", "TODO", "MAS"}
+
+
+def _palabras(texto: str) -> set:
+    return {w for w in re.findall(r"[A-ZÁÉÍÓÚÑ]{4,}", _norm(texto)) if w not in PALABRAS_VACIAS}
+
+
+def _puntuar(titulo: str) -> tuple[int, int, str]:
+    """Devuelve (puntaje, mayor peso, tema)."""
+    t = _norm(titulo)
+    score, mayor, tema = 0, 0, ""
+    for term, w in NEWS_PESOS.items():
+        if term in t:
+            score += w
+            mayor = max(mayor, w)
+    if any(k in t for k in NEWS_ECON):
+        tema = "economia"
+    elif any(k in t for k in NEWS_DESA):
+        tema = "desastre"
+    return score, mayor, tema
+
 
 def build_noticias() -> dict:
-    noticias = []
+    candidatos = []
     for medio, url in FEEDS_PRENSA:
         try:
-            raw = fetch(url, f"rss_{medio.split()[0].lower()}")
-            root = ET.fromstring(raw)
+            root = ET.fromstring(fetch(url, f"rss_{medio.split()[0].lower()}"))
         except Exception:  # noqa: BLE001
             continue
         for it in root.findall(".//item"):
-            title = html.unescape(re.sub(r"<[^>]+>", "", it.findtext("title") or "")).strip()
+            titulo = html.unescape(re.sub(r"<[^>]+>", "", it.findtext("title") or "")).strip()
             link = (it.findtext("link") or "").strip()
-            date = (it.findtext("pubDate") or "").strip()
-            if not title or not link:
+            fecha = (it.findtext("pubDate") or "").strip()
+            if not titulo or not link:
                 continue
-            n = _norm(title)
-            score = sum(3 for k in FEN_FUERTE if k in n) + sum(2 for k in FEN_MEDIO if k in n) \
-                + sum(1 for k in FEN_ZONA if k in n)
-            if score >= 2:
-                noticias.append({"titulo": title, "url": link, "medio": medio, "fecha": date, "score": score})
+            t = _norm(titulo)
+            if any(b in t for b in NEWS_BLOQUEO):
+                continue
+            if not any(a in t for a in NEWS_ANCLA):
+                continue
+            score, mayor, tema = _puntuar(titulo)
+            candidatos.append({
+                "titulo": titulo, "url": link, "medio": medio, "fecha": fecha,
+                "score": score, "mayor": mayor, "tema": tema, "_pal": _palabras(titulo),
+            })
 
-    # dedupe, una por medio y luego relleno por relevancia
-    vistos, unicas = set(), []
-    for n in sorted(noticias, key=lambda x: -x["score"]):
-        k = n["titulo"][:70].lower()
-        if k in vistos:
+    candidatos.sort(key=lambda x: -x["score"])
+
+    def elegir(minimo: int) -> list[dict]:
+        elegidos = []
+        for c in candidatos:
+            if len(elegidos) >= 3:
+                break
+            if c["mayor"] < minimo:
+                continue
+            if sum(1 for e in elegidos if e["medio"] == c["medio"]) >= 2:
+                continue
+            # dos titulares que comparten 4+ palabras cuentan la misma historia
+            if any(len(c["_pal"] & e["_pal"]) >= 4 for e in elegidos):
+                continue
+            elegidos.append(c)
+        return elegidos
+
+    # Estricto primero; si el día viene flojo, se relaja sin perder el ancla temática.
+    elegidos, criterio = elegir(3), "estricto"
+    if len(elegidos) < 3:
+        elegidos, criterio = elegir(2), "relajado"
+
+    for c in elegidos:
+        c.pop("_pal", None)
+
+    return {
+        "generated_at": now_iso(),
+        "items": elegidos,
+        "criterio": criterio,
+        "total_candidatas": len(candidatos),
+    }
+
+
+# ----------------------------------------------------------------------- PESCA
+PESCA_URLS = [
+    "https://www.datosabiertos.gob.pe/sites/default/files/DescargaAnchoveta_2025.csv",
+    "https://www.datosabiertos.gob.pe/sites/default/files/DescargaAnchoveta_2026_hTrim2.csv",
+]
+
+
+def build_pesca() -> dict:
+    """Descargas de anchoveta por puerto, zona y fecha (PRODUCE, datos abiertos)."""
+    import collections
+
+    filas = []
+    for url in PESCA_URLS:
+        nombre = url.rsplit("/", 1)[-1]
+        try:
+            raw = fetch(url, f"pesca_{nombre[:20]}")
+        except Exception:  # noqa: BLE001
             continue
-        vistos.add(k)
-        unicas.append(n)
+        texto = raw.decode("utf-8", "ignore")
+        lineas = [l for l in texto.splitlines() if l.strip()]
+        if not lineas:
+            continue
+        cab = lineas[0].split("|")
+        for linea in lineas[1:]:
+            partes = linea.split("|")
+            if len(partes) < len(cab):
+                continue
+            d = dict(zip(cab, partes))
+            try:
+                tm = float(d.get("TMDESCARGADA") or 0)
+                fecha = d.get("FECHA_DESCARGA") or ""
+                if len(fecha) < 8:
+                    continue
+                mes = f"{fecha[:4]}-{fecha[4:6]}"
+            except ValueError:
+                continue
+            filas.append({
+                "mes": mes, "zona": (d.get("ZONA") or "").strip(),
+                "puerto": (d.get("PUERTO") or "").strip(),
+                "regimen": "Artesanal" if "26920" in (d.get("REGIMEN") or "") else "Industrial",
+                "temporada": (d.get("TEMPORADA") or "").strip(),
+                "tm": tm,
+            })
 
-    seleccion, medios = [], set()
-    for n in unicas:
-        if n["medio"] not in medios:
-            seleccion.append(n)
-            medios.add(n["medio"])
-    for n in unicas:
-        if len(seleccion) >= 3:
+    if not filas:
+        raise RuntimeError("sin datos de PRODUCE")
+
+    meses = collections.defaultdict(lambda: {"total": 0.0, "Norte-Centro": 0.0, "Sur": 0.0})
+    puertos = collections.defaultdict(float)
+    regimen = collections.defaultdict(float)
+    temporadas = collections.defaultdict(float)
+    for f in filas:
+        m = meses[f["mes"]]
+        m["total"] += f["tm"]
+        if f["zona"] in ("Norte-Centro", "Sur"):
+            m[f["zona"]] += f["tm"]
+        puertos[f["puerto"]] += f["tm"]
+        regimen[f["regimen"]] += f["tm"]
+        if f["temporada"]:
+            temporadas[f["temporada"]] += f["tm"]
+
+    serie = [{"mes": k, **{a: round(b, 1) for a, b in v.items()}}
+             for k, v in sorted(meses.items())][-18:]
+
+    return {
+        "generated_at": now_iso(),
+        "fuente": "PRODUCE — Registro de descargas de anchoveta (datos abiertos, DGSF)",
+        "unidad": "toneladas métricas",
+        "registros": len(filas),
+        "cobertura": {"desde": serie[0]["mes"] if serie else None, "hasta": serie[-1]["mes"] if serie else None},
+        "mensual": serie,
+        "puertos": [{"puerto": k, "tm": round(v, 1)} for k, v in sorted(puertos.items(), key=lambda x: -x[1])[:8]],
+        "regimen": [{"nombre": k, "tm": round(v, 1)} for k, v in sorted(regimen.items(), key=lambda x: -x[1])],
+        "temporadas": [{"temporada": k, "tm": round(v, 1)} for k, v in sorted(temporadas.items())],
+    }
+
+
+# ------------------------------------------------------------------ PRONÓSTICO
+CIUDADES = [
+    ("Lima", -12.0464, -77.0428), ("Piura", -5.1945, -80.6328),
+    ("Chiclayo", -6.7714, -79.8409), ("Ica", -14.0678, -75.7286),
+    ("Iquitos", -3.7491, -73.2538), ("Arequipa", -16.4090, -71.5375),
+    ("Cusco", -13.5319, -71.9675),
+]
+
+
+def build_pronostico() -> dict:
+    lats = ",".join(str(c[1]) for c in CIUDADES)
+    lons = ",".join(str(c[2]) for c in CIUDADES)
+    url = (
+        "https://api.open-meteo.com/v1/forecast"
+        f"?latitude={lats}&longitude={lons}"
+        "&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max"
+        "&timezone=America%2FLima&forecast_days=5"
+    )
+    raw = fetch(url, "openmeteo")
+    data = json.loads(raw)
+    if isinstance(data, dict):
+        data = [data]
+
+    ciudades = []
+    for (nombre, _lat, _lon), d in zip(CIUDADES, data):
+        daily = d.get("daily", {})
+        dias = []
+        for i, fecha in enumerate(daily.get("time", [])):
+            dias.append({
+                "fecha": fecha,
+                "tmax": daily["temperature_2m_max"][i],
+                "tmin": daily["temperature_2m_min"][i],
+                "lluvia": daily["precipitation_sum"][i],
+                "prob": daily["precipitation_probability_max"][i],
+            })
+        ciudades.append({"ciudad": nombre, "dias": dias})
+
+    return {
+        "generated_at": now_iso(),
+        "fuente": "Open-Meteo (ECMWF/GFS/ICON) — no es un pronóstico oficial del SENAMHI",
+        "ciudades": ciudades,
+    }
+
+
+# ------------------------------------------------------------------ INCIDENCIAS
+DEPARTAMENTOS = {
+    "AMAZONAS": (-6.23, -77.87), "ANCASH": (-9.53, -77.53), "APURIMAC": (-13.63, -72.88),
+    "AREQUIPA": (-16.40, -71.54), "AYACUCHO": (-13.16, -74.22), "CAJAMARCA": (-6.49, -78.47),
+    "CALLAO": (-12.06, -77.15), "CUSCO": (-13.53, -71.97), "HUANCAVELICA": (-12.79, -74.97),
+    "HUANUCO": (-9.93, -76.24), "ICA": (-14.07, -75.73), "JUNIN": (-11.16, -75.99),
+    "LA LIBERTAD": (-8.11, -78.99), "LAMBAYEQUE": (-6.77, -79.84), "LIMA": (-12.05, -77.04),
+    "LORETO": (-4.0, -75.0), "MADRE DE DIOS": (-12.6, -70.0), "MOQUEGUA": (-17.19, -70.93),
+    "PASCO": (-10.69, -76.26), "PIURA": (-5.19, -80.63), "PUNO": (-15.84, -70.02),
+    "SAN MARTIN": (-6.48, -76.38), "TACNA": (-17.58, -70.24), "TUMBES": (-3.57, -80.45),
+    "UCAYALI": (-9.0, -74.0),
+}
+
+DEPTO_DISPLAY = {
+    "AMAZONAS": "Amazonas", "ANCASH": "Áncash", "APURIMAC": "Apurímac", "AREQUIPA": "Arequipa",
+    "AYACUCHO": "Ayacucho", "CAJAMARCA": "Cajamarca", "CALLAO": "Callao", "CUSCO": "Cusco",
+    "HUANCAVELICA": "Huancavelica", "HUANUCO": "Huánuco", "ICA": "Ica", "JUNIN": "Junín",
+    "LA LIBERTAD": "La Libertad", "LAMBAYEQUE": "Lambayeque", "LIMA": "Lima", "LORETO": "Loreto",
+    "MADRE DE DIOS": "Madre de Dios", "MOQUEGUA": "Moquegua", "PASCO": "Pasco", "PIURA": "Piura",
+    "PUNO": "Puno", "SAN MARTIN": "San Martín", "TACNA": "Tacna", "TUMBES": "Tumbes",
+    "UCAYALI": "Ucayali",
+}
+
+TIPOS = [
+    ("Lluvias", ["LLUVIAS INTENSAS", "PRECIPITACIONES", "LLUVIA"]),
+    ("Inundación", ["INUNDACION", "DESBORDE", "DESBORDA", "ANIEGO"]),
+    ("Movimiento de tierra", ["HUAICO", "DESLIZAMIENTO", "DERRUMBE", "ALUVION", "REPTACION"]),
+    ("Incendio forestal", ["INCENDIO FORESTAL"]),
+    ("Vientos", ["VIENTOS FUERTES", "VIENTO", "TORMENTA"]),
+    ("Frío", ["HELADA", "FRIAJE", "FRIO", "NEVADA"]),
+    ("Sequía", ["SEQUIA", "DEFICIT HIDRICO", "ESTIAJE"]),
+    ("Granizo", ["GRANIZADA", "GRANIZO"]),
+]
+
+
+def _norm(s: str) -> str:
+    import unicodedata
+    s = unicodedata.normalize("NFD", s.upper())
+    return "".join(c for c in s if unicodedata.category(c) != "Mn")
+
+
+def build_incidencias() -> dict:
+    raw = fetch("https://portal.indeci.gob.pe/emergencias/feed/", "indeci_feed")
+    root = ET.fromstring(raw)
+    items, vistos = [], set()
+    for it in root.findall(".//item"):
+        title = html.unescape(it.findtext("title") or "").strip()
+        link = (it.findtext("link") or "").strip()
+        date = (it.findtext("pubDate") or "").strip()
+        ntitle = _norm(title)
+
+        tipo = next((t for t, kws in TIPOS if any(k in ntitle for k in kws)), None)
+        if not tipo:
+            continue
+        dept = next((d for d in DEPARTAMENTOS if d in ntitle), None)
+        if not dept:
+            continue
+
+        distrito = None
+        m = re.search(r"DISTRITO DE ([A-ZÁÉÍÓÚÑ ]+?)(?:\s*[-–]|\s*$)", title, re.I)
+        if m:
+            distrito = m.group(1).strip().title()
+
+        key = (tipo, dept, ntitle[:60])
+        if key in vistos:
+            continue
+        vistos.add(key)
+
+        lat, lon = DEPARTAMENTOS[dept]
+        items.append({
+            "tipo": tipo, "departamento": DEPTO_DISPLAY.get(dept, dept.title()), "distrito": distrito,
+            "lat": lat, "lon": lon, "titulo": title, "url": link, "fecha": date,
+        })
+        if len(items) >= 60:
             break
-        if n not in seleccion:
-            seleccion.append(n)
 
-    return {"generated_at": now_iso(), "items": seleccion[:3], "total_candidatas": len(unicas)}
+    # conteo por departamento para el mapa
+    resumen: dict[str, dict] = {}
+    for it in items:
+        k = it["departamento"]
+        r = resumen.setdefault(k, {"departamento": k, "lat": it["lat"], "lon": it["lon"],
+                                   "total": 0, "tipos": {}, "ultimo": it})
+        r["total"] += 1
+        r["tipos"][it["tipo"]] = r["tipos"].get(it["tipo"], 0) + 1
+
+    return {"generated_at": now_iso(), "items": items,
+            "departamentos": sorted(resumen.values(), key=lambda x: -x["total"]),
+            "fuente": "INDECI — COEN, reportes de emergencia"}
 
 
 # --------------------------------------------------------------------------- main

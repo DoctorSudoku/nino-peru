@@ -155,7 +155,7 @@ viral, se sirve desde el borde sin costo extra ni límite práctico.
 | `meta.json` con `errors` no vacío dos días seguidos | una fuente cambió | arreglar el fetcher |
 | Fecha del mapa muy atrás | ERDDAP caído y usando el espejo con rezago | esperar; el fallback ya actúa |
 | "sin cifras verificables" varios días | los PDF del INDECI vienen con celdas fusionadas | es la deuda conocida del extractor |
-| Títulos de prensa irrelevantes | el filtro de palabras clave se quedó corto | ajustar `FEN_FUERTE` en `build.py` |
+| Títulos de prensa irrelevantes | el filtro de palabras clave se quedó corto | ajustar `NEWS_PESOS` / `NEWS_BLOQUEO` en `build.py` |
 
 ---
 

@@ -243,6 +243,7 @@ h1 em { font-style: normal; color: var(--accent); }
   text-decoration: none; transition: border-color .15s, transform .15s;
 }
 .news-card:hover { border-color: var(--ink-3); transform: translateY(-1px); }
+.news-top { display: flex; align-items: center; gap: .45rem; flex-wrap: wrap; }
 .news-medio { font-size: .68rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
 .news-title { font-family: var(--serif); font-size: 1rem; line-height: 1.3; color: var(--ink); }
 .news-date { font-size: .7rem; color: var(--ink-3); margin-top: auto; }
@@ -250,6 +251,21 @@ h1 em { font-style: normal; color: var(--accent); }
 /* -------------------------------------------------------------- incidencias */
 .inc-grid { display: grid; grid-template-columns: 1.35fr .65fr; gap: 1rem; align-items: start; }
 .map-inc { height: 420px; border-radius: 10px 10px 0 0; background: var(--map-bg); }
+/* pines del mapa de incidencias */
+.inc-icon { background: none; border: 0; }
+.inc-pin {
+  position: relative; width: 30px; height: 30px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 14px; line-height: 1;
+  background: var(--surface); border: 2px solid var(--c, #888);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, .3);
+}
+.inc-count {
+  position: absolute; top: -7px; right: -7px; min-width: 15px; padding: 0 3px;
+  background: var(--ink); color: var(--bg); border-radius: 99px;
+  font-size: 9px; font-weight: 700; line-height: 15px; text-align: center;
+}
+.danos-kpi .l span { font-size: .95em; }
+
 .inc-legend { display: flex; flex-wrap: wrap; gap: .7rem; padding: .6rem .8rem .8rem; font-size: .72rem; color: var(--ink-3); }
 .inc-legend span { display: inline-flex; align-items: center; gap: .3rem; }
 .inc-legend i { width: .55rem; height: .55rem; border-radius: 50%; display: inline-block; }
