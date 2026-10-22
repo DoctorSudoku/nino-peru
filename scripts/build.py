@@ -958,11 +958,14 @@ def main() -> int:
     print(f"OK  curado: {len(curated['indices'])} meses de índices, {len(curated['sectors'])} sectores")
     # El código de salida depende solo de los datos esenciales: un fallo de red en una
     # fuente secundaria no debe impedir publicar lo demás.
+    # Esencial = lo que no se puede sustituir en pantalla. El mapa y la lista de
+    # documentos del ENFEN degradan (la página avisa), pero no bloquean la publicación.
     esenciales = {
         "enso.json": bool(enso.get("monthly")),
-        "enfen.json": bool(enfen.get("reports")),
-        "sst.json": (OUT / "sst.json").exists(),
+        "enfen.json": bool(enfen.get("indices")),
     }
+    if not (OUT / "sst.json").exists():
+        print("AVISO: sin mapa del mar; la portada se publica sin él.", file=sys.stderr)
     faltan = [k for k, ok in esenciales.items() if not ok]
     if faltan:
         print(f"FALTAN DATOS ESENCIALES: {', '.join(faltan)}", file=sys.stderr)

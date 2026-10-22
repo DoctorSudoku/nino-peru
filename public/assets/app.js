@@ -1248,7 +1248,13 @@ async function init() {
   bindExports(enfen);
   bindTheme(enso, enfen, state);
 
-  if (window.L && sst.boxes) MapModule.init(sst);
+  if (window.L && sst?.boxes) {
+    MapModule.init(sst);
+  } else {
+    const card = document.querySelector(".map-card");
+    if (card) card.style.display = "none";
+    console.warn("Sin datos del mapa; se oculta el bloque.");
+  }
 
   $("#foot-built").textContent = dateLabel(meta.built_at.slice(0, 10));
   $("#foot-next").textContent = dateLabel(enfen.alert?.next_update);
