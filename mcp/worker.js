@@ -215,6 +215,15 @@ async function atender(msg) {
       protocolVersion: params.protocolVersion || PROTOCOLO,
       capabilities: { tools: {}, resources: {} },
       serverInfo: { name: "nino-peru", version: VERSION, title: "Tablero El Niño · Perú" },
+      instructions:
+        "Datos públicos del fenómeno El Niño en el Perú, del tablero del Grupo Evidencia / Media Lamb. " +
+        "Fuentes: NOAA CPC (índices ENSO), ENFEN (alerta, ríos y embalses), INDECI (emergencias), " +
+        "PRODUCE (descargas de anchoveta) y Open-Meteo (pronóstico). " +
+        "Usa resumen_actual para el estado vigente; indices_enso para contexto histórico desde 1950; " +
+        "agua_territorio para caudales y reservorios; incidencias_recientes para emergencias; " +
+        "clima_ciudades para el pronóstico de los próximos días. " +
+        "Las cifras del ENFEN se transcriben con cita de página: el ICEN mide la costa peruana (Niño 1+2) " +
+        "y el ONI el Pacífico central (Niño 3.4); no son intercambiables.",
     });
   }
   if (method === "tools/list") return rpcOk(id, { tools: TOOLS.map(({ run, ...t }) => t) });
