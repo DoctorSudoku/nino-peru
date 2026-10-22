@@ -956,9 +956,19 @@ def main() -> int:
     print(f"OK  enfen: {len(enfen.get('reports', []))} informes, {len(enfen.get('news', []))} notas, "
           f"último informe: {(enfen.get('latest_report') or {}).get('title')}")
     print(f"OK  curado: {len(curated['indices'])} meses de índices, {len(curated['sectors'])} sectores")
-    if errors:
-        print("ADVERTENCIA:", "; ".join(errors), file=sys.stderr)
+    # El código de salida depende solo de los datos esenciales: un fallo de red en una
+    # fuente secundaria no debe impedir publicar lo demás.
+    esenciales = {
+        "enso.json": bool(enso.get("monthly")),
+        "enfen.json": bool(enfen.get("reports")),
+        "sst.json": (OUT / "sst.json").exists(),
+    }
+    faltan = [k for k, ok in esenciales.items() if not ok]
+    if faltan:
+        print(f"FALTAN DATOS ESENCIALES: {', '.join(faltan)}", file=sys.stderr)
         return 1
+    if errors:
+        print("ADVERTENCIA (se publica igual):", "; ".join(errors), file=sys.stderr)
     return 0
 
 

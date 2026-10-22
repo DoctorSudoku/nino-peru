@@ -43,7 +43,14 @@ jobs:
         run: python -m pip install --quiet pymupdf
 
       - name: Construir los datos
-        run: python scripts/build.py
+        run: |
+          # Reintenta ante fallos transitorios de red (INDECI, PRODUCE, ERDDAP)
+          for i in 1 2 3; do
+            if python scripts/build.py; then exit 0; fi
+            echo "::warning::Intento $i falló; reintentando en 20 s"
+            sleep 20
+          done
+          exit 1
 
       - name: Verificar frescura
         run: python scripts/check_frescura.py
