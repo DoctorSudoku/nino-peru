@@ -736,12 +736,16 @@ def build_incidencias() -> dict:
 FEEDS_PRENSA = [
     ("RPP Noticias", "https://rpp.pe/rss"),
     ("Agencia Andina", "https://andina.pe/agencia/rss.aspx"),
+    ("Infobae Perú", "https://www.infobae.com/arc/outboundfeeds/rss/category/peru/?outputType=xml"),
+    ("Semana Económica", "https://semanaeconomica.com/feed"),
 ]
 
 # Titulares que no aportan nada al tablero (pronósticos diarios, farándula, deportes).
 NEWS_BLOQUEO = [
-    "PRONOSTICO DEL CLIMA", "PRONOSTICO DEL TIEMPO", "CLIMA HOY", "EL CLIMA EN",
-    "TEMPERATURA HOY", "HOROSCOPO", "SORTEO", "FUTBOL", "PERU VS", "LIGA 1",
+    "PRONOSTICO DEL CLIMA", "PRONOSTICO DEL TIEMPO", "PRONOSTICO PARA HOY",
+    "PRONOSTICO DE HOY", "CONOCE EL PRONOSTICO", "COMO ESTARA EL CLIMA",
+    "EL CLIMA Y LAS LLUVIAS", "CLIMA HOY", "EL CLIMA EN", "TEMPERATURA HOY",
+    "HOROSCOPO", "SORTEO", "FUTBOL", "PERU VS", "LIGA 1",
     "ESPECTACULOS", "FARANDULA", "ASESINATO", "CRIMEN",
 ]
 
@@ -777,6 +781,36 @@ PALABRAS_VACIAS = {"PARA", "DESDE", "ESTE", "ENTRE", "SOBRE", "CONTRA", "PORQUE"
                    "CUANDO", "DONDE", "TRAS", "SERA", "ESTA", "TODO", "MAS"}
 
 
+def _leer_feed(raw: bytes) -> list[tuple[str, str, str]]:
+    """Titulares de un feed, sea RSS 2.0 (<item>) o Atom (<entry>)."""
+    try:
+        root = ET.fromstring(raw)
+    except ET.ParseError:
+        return []
+
+    def local(tag: str) -> str:
+        return tag.rsplit("}", 1)[-1]
+
+    salida = []
+    for el in root.iter():
+        if local(el.tag) not in ("item", "entry"):
+            continue
+        titulo = link = fecha = ""
+        for hijo in el:
+            n = local(hijo.tag)
+            if n == "title":
+                titulo = "".join(hijo.itertext()).strip()
+            elif n == "link" and not link:
+                rel = hijo.get("rel", "alternate")
+                if rel == "alternate":
+                    link = (hijo.get("href") or "".join(hijo.itertext())).strip()
+            elif n in ("pubDate", "published", "updated") and not fecha:
+                fecha = (hijo.text or "").strip()
+        if titulo and link:
+            salida.append((html.unescape(re.sub(r"<[^>]+>", "", titulo)).strip(), link, fecha))
+    return salida
+
+
 def _palabras(texto: str) -> set:
     return {w for w in re.findall(r"[A-ZÁÉÍÓÚÑ]{4,}", _norm(texto)) if w not in PALABRAS_VACIAS}
 
@@ -800,15 +834,10 @@ def build_noticias() -> dict:
     candidatos = []
     for medio, url in FEEDS_PRENSA:
         try:
-            root = ET.fromstring(fetch(url, f"rss_{medio.split()[0].lower()}"))
+            entradas = _leer_feed(fetch(url, f"rss_{medio.split()[0].lower()}"))
         except Exception:  # noqa: BLE001
             continue
-        for it in root.findall(".//item"):
-            titulo = html.unescape(re.sub(r"<[^>]+>", "", it.findtext("title") or "")).strip()
-            link = (it.findtext("link") or "").strip()
-            fecha = (it.findtext("pubDate") or "").strip()
-            if not titulo or not link:
-                continue
+        for titulo, link, fecha in entradas:
             t = _norm(titulo)
             if any(b in t for b in NEWS_BLOQUEO):
                 continue
