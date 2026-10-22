@@ -1100,10 +1100,16 @@ function renderDanos(data) {
     </tr>`;
   }).join("");
 
+  const conCifras = data.items.filter((i) => !i.sin_datos).length;
+  const resto = data.items.length - conCifras;
+  const faltaEdan = resto === 0
+    ? "todos traen cifras de las métricas que publicamos."
+    : `en ${resto === 1 ? "uno" : `${resto}`} el EDAN sigue en proceso o el daño es de otro tipo ` +
+      `(vías, por ejemplo).`;
   $("#danos-note").innerHTML =
-    `Solo las emergencias con Evaluación de Daños (EDAN) enviada al SINPAD traen cifras; ${sinEdan} ` +
-    `${sinEdan === 1 ? "departamento" : "departamentos"} ` +
-    `con reportes aún no la tienen. Hectáreas de cobertura: ${nf(0).format(haCab)} (forestal y natural). ` +
+    `De ${data.items.length} reportes de hoy, ${conCifras} traen cifras de las métricas que publicamos: ` +
+    `${faltaEdan} ` +
+    `Hectáreas de cobertura: ${nf(0).format(haCab)} (forestal y natural). ` +
     `Fuente: INDECI, tablas 3.1 de cada reporte.`;
 }
 

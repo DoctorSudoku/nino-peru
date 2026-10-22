@@ -41,7 +41,7 @@ Descarga directa del informe:
 | PRODUCE / IMARPE | Desembarques, cuotas, temporadas de anchoveta | ⏳ `imarpe.gob.pe` responde 403 a clientes automatizados; `repositorio.imarpe.gob.pe` sí responde |
 | SENAMHI | Avisos meteorológicos, caudales, estaciones | ⏳ sin API pública documentada; las páginas son portales, no tablas |
 | INDECI — feed de emergencias | Reportes del COEN con lugar y tipo de evento | ✅ RSS; cada reporte enlaza un PDF con la tabla de daños |
-| INDECI — PDFs de reportes | Damnificados, viviendas, hectáreas por evento | ⚠️ la tabla 3.1 no tiene estructura fija: a veces fusiona dos cifras en una celda ("16"+"1"="161"). Solo se publican celdas con una única cifra; el resto se descarta |
+| INDECI — PDFs de reportes | Damnificados, viviendas, hectáreas por evento | ✅ dos lectores: detección de tabla de PyMuPDF y, si no hay tabla (la mayoría), lectura por coordenadas (cada cifra se asigna a la cabecera que cae encima). Las cifras absurdas se descartan por límites |
 | INDECI / SINPAD (visor) | Emergencias y daños consolidados | ⏳ sin API; el visor geoespacial es público |
 | CENEPRED / SIGRID | Escenarios de riesgo por lluvias | ⏳ documentos PDF por evento |
 | PRODUCE — datos abiertos | Descargas de anchoveta por puerto, zona y fecha | ✅ CSV de 10 MB (2025) y 2 MB (2026) en datosabiertos.gob.pe |

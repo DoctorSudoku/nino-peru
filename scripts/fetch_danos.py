@@ -108,6 +108,152 @@ def clasificar(contexto: str) -> str | None:
     return None
 
 
+def _lineas(page, y_min: float, y_max: float) -> list[list]:
+    """Agrupa las palabras de una franja vertical en líneas (por línea base)."""
+    ws = [w for w in page.get_text("words") if y_min <= w[1] <= y_max]
+    ws.sort(key=lambda w: (w[1], w[0]))
+    lineas, actual, base = [], [], None
+    for w in ws:
+        if base is None or abs(w[1] - base) < 3.5:
+            actual.append(w)
+            base = w[1] if base is None else base
+        else:
+            lineas.append(sorted(actual, key=lambda x: x[0]))
+            actual, base = [w], w[1]
+    if actual:
+        lineas.append(sorted(actual, key=lambda x: x[0]))
+    return lineas
+
+
+def _ancla_danos(page) -> tuple[float, float] | None:
+    """Devuelve la franja y donde vive la tabla de daños de la página."""
+    lineas = _lineas(page, 0, page.rect.height)
+    ini = fin = None
+    for ln in lineas:
+        txt = norm(" ".join(w[4] for w in ln))
+        if ini is None and re.match(r"^3\.?1", txt):
+            ini = ln[0][1]
+        elif ini is not None and (txt.startswith("NOTA") or txt.startswith("FUENTE")
+                                  or re.match(r"^(3\.2|4\.)", txt)):
+            fin = ln[0][1]
+            break
+    if ini is None:
+        return None
+    return ini, (fin if fin is not None else min(ini + 200, page.rect.height))
+
+
+SECCION_PALABRAS = {
+    "VIDA", "SALUD", "PERSONA", "VIVIENDA", "COBERTURA", "NATURAL", "CULTIVO",
+    "MATERIALES", "SECTORES", "DIVERSOS", "INFRAESTRUCTURA", "SERVICIOS",
+    "AGRICOLA", "PECUARIO", "ANIMALES", "ANIMAL",
+}
+# conectores que forman parte del nombre de la sección ("VIDA Y SALUD")
+CONECTORES = {"Y", "DE", "A", "DEL", "LA"}
+ETIQUETA_PALABRAS = {
+    "DAMNIFICADA", "DAMNIFICADAS", "AFECTADA", "AFECTADAS", "HERIDA", "HERIDAS",
+    "LESIONADA", "LESIONADAS", "FALLECIDA", "FALLECIDAS", "DESAPARECIDA",
+    "DESAPARECIDAS", "DESTRUIDA", "DESTRUIDAS", "AFECTADO", "PERDIDA", "PERDIDAS",
+    "MUERTOS", "MUERTAS", "(HA)",
+}
+
+
+def _mayus(t: str) -> str:
+    return norm(t)
+
+
+def extraer_por_coordenadas(page) -> dict[str, float]:
+    """Lee la tabla de daños sin depender de que PyMuPDF detecte una tabla.
+
+    Los reportes del INDECI maquetan la tabla con espacios, sin bordes, así que
+    ``find_tables`` no ve nada. Aquí se reconstruye la grilla:
+
+    1. cada etiqueta de columna (DAMNIFICADA, DESTRUIDA…) forma una columna;
+    2. cada columna hereda la sección que tiene justo encima (VIDA Y SALUD,
+       VIVIENDA, COBERTURA NATURAL…);
+    3. cada cifra de la fila DPTO./PROV./DIST. se asigna a la columna que cae
+       sobre ella.
+    """
+    franja = _ancla_danos(page)
+    if not franja:
+        return {}
+    lineas = _lineas(page, *franja)
+    if not lineas:
+        return {}
+    corte = next((ln[0][1] for ln in lineas
+                  if _mayus(" ".join(w[4] for w in ln)).startswith(("DPTO", "PROV", "DIST"))), None)
+    if corte is None:
+        return {}
+
+    cabecera = [w for ln in lineas if ln[0][1] < corte for w in ln]
+    cuerpo = [ln for ln in lineas if ln[0][1] >= corte]
+
+    # --- secciones: frases contiguas de la misma línea
+    secciones = []
+    for ln in lineas:
+        if ln[0][1] >= corte:
+            break
+        grupo = []
+        for w in ln:
+            pal = _mayus(w[4])
+            if pal in SECCION_PALABRAS or (grupo and pal in CONECTORES):
+                if grupo and w[0] - grupo[-1][2] > 14:
+                    secciones.append(grupo); grupo = []
+                grupo.append(w)
+            elif grupo:
+                secciones.append(grupo); grupo = []
+        if grupo:
+            secciones.append(grupo)
+    secciones = [(g[0][0], g[-1][2], g[0][1], " ".join(w[4] for w in g)) for g in secciones]
+
+    # --- columnas: etiquetas alineadas en vertical
+    etiquetas = [w for w in cabecera if _mayus(w[4]) in ETIQUETA_PALABRAS]
+    columnas = []  # [x0, x1, y_min, etiquetas]
+    for w in sorted(etiquetas, key=lambda x: x[0]):
+        centro = (w[0] + w[2]) / 2
+        for col in columnas:
+            if abs((col[0] + col[1]) / 2 - centro) <= 14:
+                col[0] = min(col[0], w[0]); col[1] = max(col[1], w[2])
+                col[3].append(w[4])
+                break
+        else:
+            columnas.append([w[0], w[2], w[1], [w[4]]])
+    if not columnas:
+        return {}
+
+    # --- cada columna hereda la sección más cercana por encima
+    def secciones_de(col):
+        """Secciones candidatas, de la más cercana hacia arriba."""
+        centro = (col[0] + col[1]) / 2
+        cand = [(col[2] - y, texto) for x0, x1, y, texto in secciones
+                if col[2] - y > 1 and x0 - 30 <= centro <= x1 + 30]
+        return [t for _, t in sorted(cand)]
+
+    def nombre_col(col):
+        """Sección + etiqueta; si la más cercana no clasifica, se prueba la siguiente."""
+        etiqueta = " ".join(col[3])
+        for sec in secciones_de(col):
+            if clasificar(f"{sec} {etiqueta}"):
+                return f"{sec} {etiqueta}"
+        cands = secciones_de(col)
+        return f"{cands[0] if cands else ''} {etiqueta}"
+
+    # --- cifras del cuerpo
+    metricas: dict[str, float] = {}
+    for ln in cuerpo:
+        for w in ln:
+            token = w[4].strip()
+            if not re.fullmatch(r"\d+(?:[.,]\d+)?", token):
+                continue
+            centro = (w[0] + w[2]) / 2
+            col = min(columnas, key=lambda c: abs((c[0] + c[1]) / 2 - centro))
+            if abs((col[0] + col[1]) / 2 - centro) > 26:
+                continue
+            met = clasificar(nombre_col(col))
+            if met:
+                metricas[met] = metricas.get(met, 0) + numero(token)
+    return metricas
+
+
 def extraer_danos(pdf_path: Path) -> dict:
     """Lee las tablas con 'DAÑOS' y normaliza las cifras por columna.
 
@@ -178,6 +324,13 @@ def extraer_danos(pdf_path: Path) -> dict:
                 met = clasificar(ctx)
                 if met:
                     dudosas.setdefault(met, v)
+
+    # Si no hubo tabla detectable, o no aportó cifras, se lee por coordenadas.
+    if not metrics:
+        for page in doc[:6]:
+            for met, v in extraer_por_coordenadas(page).items():
+                metrics.setdefault(met, v)
+
     # lo dudoso no se publica
     return metrics, dudosas
 

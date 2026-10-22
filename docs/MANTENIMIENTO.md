@@ -154,16 +154,17 @@ viral, se sirve desde el borde sin costo extra ni límite práctico.
 |---|---|---|
 | `meta.json` con `errors` no vacío dos días seguidos | una fuente cambió | arreglar el fetcher |
 | Fecha del mapa muy atrás | ERDDAP caído y usando el espejo con rezago | esperar; el fallback ya actúa |
-| "sin cifras verificables" varios días | los PDF del INDECI vienen con celdas fusionadas | es la deuda conocida del extractor |
+| "sin cifras verificables" varios días | cambió la maqueta del PDF del INDECI | revisar `extraer_por_coordenadas()` en `fetch_danos.py` |
 | Títulos de prensa irrelevantes | el filtro de palabras clave se quedó corto | ajustar `NEWS_PESOS` / `NEWS_BLOQUEO` en `build.py` |
 
 ---
 
 ## Deuda técnica conocida
 
-1. **Extractor de daños del INDECI.** La tabla 3.1 no tiene estructura fija; cuando el
-   PDF fusiona dos cifras en una celda se descarta el dato. Arreglo: leer por
-   coordenadas (x/y de cada palabra) en lugar de confiar en la detección de líneas.
+1. **Extractor de daños del INDECI.** Resuelto en octubre de 2026: los PDF sin bordes
+   se leen por coordenadas (cada cifra se asigna a la cabecera que cae encima y la
+   columna hereda la sección de arriba). Queda pendiente añadir las métricas que hoy no
+   se publican, como metros de vía afectada.
 2. **Caché de PDFs.** `data/raw/indeci/` crece sin límite. Conviene purgar lo que tenga
    más de 90 días.
 3. **Cifras curadas a mano.** Es intencional, pero significa que el tablero no se
