@@ -40,7 +40,7 @@ jobs:
           python-version: "3.12"
 
       - name: Dependencias (PyMuPDF para los PDF del INDECI)
-        run: python -m pip install --quiet --target .pylibs pymupdf
+        run: python -m pip install --quiet pymupdf
 
       - name: Construir los datos
         run: python scripts/build.py

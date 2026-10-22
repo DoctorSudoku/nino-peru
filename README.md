@@ -15,8 +15,8 @@ documento oficial con cita de página**.
 ## Cómo verlo
 
 ```bash
-cd public
-python3 -m http.server 8788
+python3 scripts/build.py          # genera public/data/*.json (no se versionan)
+python3 -m http.server -d public 8788
 # abrir http://127.0.0.1:8788/
 ```
 
