@@ -383,8 +383,8 @@ function renderKPIs(enso, enfen) {
   const metaEl = $("#hero-meta");
   if (metaEl) {
     metaEl.innerHTML = week
-      ? `Semana del <b>${dateLabel(week.date)}</b> · OISST semanal de NOAA (semana cerrada). ` +
-        `El dato mensual oficial es el <b>ICEN de ${monthLabel(lastIdx.month)}: ${signed(lastIdx.icen)} °C</b> (ENFEN).`
+      ? `Semana del <b>${dateLabel(week.date)}</b> (OISST). Cifra mensual oficial: ` +
+        `<b>ICEN ${signed(lastIdx.icen)} °C</b>, ${monthLabel(lastIdx.month)} (ENFEN).`
       : "";
   }
   $("#hero-lede").innerHTML =
