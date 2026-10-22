@@ -7,7 +7,8 @@ técnico» es lo que realmente respondió, no lo que la documentación promete.
 
 | Fuente | Endpoint | Qué aporta | Frecuencia | Estado técnico |
 |---|---|---|---|---|
-| NOAA CPC — índices Niño | `https://www.cpc.ncep.noaa.gov/data/indices/ersst5.nino.mth.91-20.ascii` | TSM y anomalía mensual de Niño 1+2, 3, 3.4 y 4, 1950–hoy | mensual | ✅ texto plano, sin clave. **Ojo:** el orden de columnas es 1+2, 3, **4, 3.4** (no el habitual) |
+| NOAA CPC — índices Niño | `https://www.cpc.ncep.noaa.gov/data/indices/ersst5.nino.mth.91-20.ascii` | Historia mensual de Niño 1+2, 3, 3.4 y 4 desde 1950 | mensual | ✅ texto plano, sin clave. **Ojo:** el orden de columnas es 1+2, 3, **4, 3.4** (no el habitual). **Suele ir 1–4 meses por detrás** |
+| NOAA CPC — índices Niño NRT | `https://www.cpc.ncep.noaa.gov/data/indices/sstoi.indices` | Misma serie mensual, alcanza el último mes cerrado (arranca en 1982) | mensual | ✅ texto plano, mismo formato y orden de columnas. Es la que manda en los meses recientes: el pipeline empalma NRT (1982+) con ERSSTv5 (1950–1981) |
 | NOAA CPC — ONI | `https://www.cpc.ncep.noaa.gov/data/indices/oni.ascii.txt` | ONI estacional (media móvil 3 meses, Niño 3.4) | mensual | ✅ texto plano; llega una temporada más adelante que el archivo mensual |
 | ENFEN — sitio | `https://enfen.imarpe.gob.pe/` | Lista de informes técnicos y comunicados con fechas | quincenal | ✅ WordPress; los documentos están en `/download/...` (WPDM) |
 | ENFEN — REST | `https://enfen.imarpe.gob.pe/wp-json/wp/v2/posts` | Notas de prensa y comunicados con fecha | continuo | ✅ JSON limpio |

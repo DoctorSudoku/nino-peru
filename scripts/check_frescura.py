@@ -76,6 +76,27 @@ def main() -> int:
             else:
                 avisos.append(f"{archivo} tiene {horas:.0f} h (límite {limite})")
 
+    # Vigencia del DATO, no solo del pipeline: un JSON regenerado hace minutos puede contener
+    # una serie de hace meses. Pasó en octubre de 2026: la serie mensual publicada era de
+    # junio mientras NOAA ya tenía septiembre, y el chequeo anterior no lo veía.
+    enso_ruta = DATA / "enso.json"
+    if enso_ruta.exists():
+        e = json.loads(enso_ruta.read_text(encoding="utf-8"))
+        lm = e.get("latest_month") or {}
+        cov = e.get("coverage") or {}
+        usado = f"{int(lm['y']):04d}-{int(lm['m']):02d}" if lm.get("y") and lm.get("m") else None
+        nrt = cov.get("nrt_last")
+        print(f"\nserie mensual: publicado {usado or '—'} · fuente NRT {nrt or '—'} · "
+              f"ERSSTv5 {cov.get('ersst5_last') or '—'}")
+        if usado:
+            meses = (ahora.year - int(lm["y"])) * 12 + (ahora.month - int(lm["m"]))
+            if meses >= 3:
+                fallos.append(f"la serie mensual está {meses} meses atrás ({usado})")
+            elif meses >= 2:
+                avisos.append(f"la serie mensual va {meses} meses atrás ({usado})")
+        if nrt and usado and nrt > usado:
+            fallos.append(f"la fuente ya publicó {nrt} y el sitio sirve {usado}")
+
     # cifras de daño: se informa cobertura, no se exige
     danos = DATA / "danos.json"
     if danos.exists():
