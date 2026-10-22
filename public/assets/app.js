@@ -356,9 +356,9 @@ function renderKPIs(enso, enfen) {
   const next = enfen.alert?.next_update;
 
   const cards = [
-    { label: "ICEN · costa peruana", value: signed(lastIdx.icen), unit: "°C", badge: lastIdx.icen_cat, note: `${monthLabel(lastIdx.month)} · provisional`, hot: true },
-    { label: "ONI · Pacífico central", value: signed(oni.anom), unit: "°C", badge: lastIdx.oni_cat, note: `Temporada ${oni.season} ${oni.y}`, hot: true },
-    { label: "Mar frente a la costa", value: week ? signed(week.n12a, 1) : "—", unit: "°C", badge: week ? `Niño 3.4 (global) ${signed(week.n34a, 1)}` : "", note: week ? `Semana del ${dateLabel(week.date)}` : "" },
+    { label: "ICEN · costa peruana (ENFEN)", value: signed(lastIdx.icen), unit: "°C", badge: lastIdx.icen_cat, note: `Mes de ${monthLabel(lastIdx.month)} · provisional`, hot: true },
+    { label: "ONI · Pacífico central (NOAA)", value: signed(oni.anom), unit: "°C", badge: lastIdx.oni_cat, note: `Temporada ${oni.season} ${oni.y} · media de 3 meses`, hot: true },
+    { label: "Mar frente a la costa · Niño 1+2", value: week ? signed(week.n12a, 1) : "—", unit: "°C", badge: week ? `Niño 3.4: ${signed(week.n34a, 1)}` : "", note: week ? `Semana del ${dateLabel(week.date)} · OISST` : "" },
     { label: "Próximo comunicado", value: next ? next.slice(8, 10) : "—", unit: next ? MONTH_ES[Number(next.slice(5, 7)) - 1] : "", badge: "ENFEN", note: `Informe N° 18 · ${dateLabel(enfen.provenance?.cutoff)}` },
   ];
 
@@ -378,6 +378,14 @@ function renderKPIs(enso, enfen) {
   const titleEl = $("#hero-title");
   if (titleEl && week) {
     titleEl.innerHTML = `El mar frente al Perú está <em>${nf(1).format(Math.abs(week.n12a))} °C</em> sobre lo normal`;
+  }
+  // Sin esto, la cifra del titular (semanal) y la del ICEN (mensual) parecen la misma medición.
+  const metaEl = $("#hero-meta");
+  if (metaEl) {
+    metaEl.innerHTML = week
+      ? `Semana del <b>${dateLabel(week.date)}</b> · OISST semanal de NOAA (semana cerrada). ` +
+        `El dato mensual oficial es el <b>ICEN de ${monthLabel(lastIdx.month)}: ${signed(lastIdx.icen)} °C</b> (ENFEN).`
+      : "";
   }
   $("#hero-lede").innerHTML =
     `El ENFEN mantiene la alerta máxima: El Niño costero es <strong>${magMasculino(mag)}</strong> y seguiría así hasta ${monthLabel("2027-01", true)}.`;
