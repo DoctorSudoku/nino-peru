@@ -1256,6 +1256,15 @@ async function init() {
   bindExports(enfen);
   bindTheme(enso, enfen, state);
 
+  const btnMcp = document.querySelector("[data-copy-mcp]");
+  if (btnMcp) {
+    btnMcp.addEventListener("click", async () => {
+      const url = "https://nino-peru-mcp.doctorsudoku.workers.dev/mcp";
+      try { await navigator.clipboard.writeText(url); } catch { /* sin permisos */ }
+      toast("Endpoint copiado");
+    });
+  }
+
   if (window.L && sst?.boxes) {
     MapModule.init(sst);
   } else {
