@@ -44,6 +44,13 @@ SOURCES = {
         "frequency": "mensual",
         "license": "Dominio público (gobierno de EE. UU.)",
     },
+    "noaa_nino_nrt": {
+        "name": "NOAA CPC — Índices Niño mensuales (serie NRT, alcanza el último mes cerrado)",
+        "url": "https://www.cpc.ncep.noaa.gov/data/indices/sstoi.indices",
+        "publisher": "NOAA Climate Prediction Center",
+        "frequency": "mensual",
+        "license": "Dominio público (gobierno de EE. UU.)",
+    },
     "noaa_oni": {
         "name": "NOAA CPC — Oceanic Niño Index (ONI)",
         "url": "https://www.cpc.ncep.noaa.gov/data/indices/oni.ascii.txt",
@@ -252,8 +259,24 @@ def detect_oni_episodes(oni: list[dict], threshold: float = 0.5, min_seasons: in
     return out
 
 
-def build_enso(nino_raw: bytes, oni_raw: bytes) -> dict:
-    monthly = parse_nino(nino_raw)
+def build_enso(nino_raw: bytes, oni_raw: bytes, nrt_raw: bytes | None = None) -> dict:
+    hist = parse_nino(nino_raw)
+    nrt = parse_nino(nrt_raw) if nrt_raw else []
+
+    # Dos publicaciones de NOAA con el mismo formato pero distinto rezago: ERSSTv5 arranca
+    # en 1950 y suele ir uno a cuatro meses por detrás; la serie NRT (sstoi.indices) llega
+    # al último mes cerrado. Se empalman: NRT manda en su ventana, ERSSTv5 cubre la historia.
+    if nrt:
+        corte = min((r["y"], r["m"]) for r in nrt)
+        monthly = [r for r in hist if (r["y"], r["m"]) < corte] + nrt
+    else:
+        monthly = hist
+
+    def ym(rows: list[dict]) -> str | None:
+        return f"{rows[-1]['y']:04d}-{rows[-1]['m']:02d}" if rows else None
+
+    coverage = {"ersst5_last": ym(hist), "nrt_last": ym(nrt), "used_last": ym(monthly)}
+
     oni = parse_oni(oni_raw)
     episodes = detect_episodes(monthly)
     current = next((e for e in episodes if e["ongoing"]), None)
@@ -280,9 +303,12 @@ def build_enso(nino_raw: bytes, oni_raw: bytes) -> dict:
         "oni_episodes": oni_episodes,
         "oni_current": oni_current,
         "oni_latest": oni[-1],
+        "coverage": coverage,
         "lag_note": (
-            f"El archivo mensual ERSSTv5 de NOAA llega hasta {monthly[-1]['y']}-{monthly[-1]['m']:02d}; "
-            "el ONI estacional llega una temporada más adelante. Por eso el comparador histórico usa ONI."
+            f"La serie mensual se arma con dos publicaciones de NOAA: ERSSTv5 (desde 1950, llega a "
+            f"{coverage['ersst5_last']}) y la serie NRT (llega a {coverage['nrt_last']}). Se usa NRT en "
+            f"los meses recientes y ERSSTv5 para la historia; el último mes publicado es {coverage['used_last']}. "
+            "El ONI estacional puede ir una temporada por delante."
         ),
         "stats": {
             "n_months": len(monthly),
@@ -763,9 +789,16 @@ def main() -> int:
     errors = []
 
     try:
+        nrt_raw = fetch(SOURCES["noaa_nino_nrt"]["url"], "noaa_nino_nrt")
+    except Exception as exc:  # noqa: BLE001
+        print(f"AVISO NOAA NRT: {exc}", file=sys.stderr)
+        nrt_raw = None
+
+    try:
         enso = build_enso(
             fetch(SOURCES["noaa_nino"]["url"], "noaa_nino"),
             fetch(SOURCES["noaa_oni"]["url"], "noaa_oni"),
+            nrt_raw,
         )
     except Exception as exc:  # noqa: BLE001
         print(f"ERROR NOAA: {exc}", file=sys.stderr)
