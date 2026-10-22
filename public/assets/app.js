@@ -26,6 +26,14 @@ const dateLabel = (iso) => {
 const cssv = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 const theme = () => document.documentElement.getAttribute("data-theme") || "light";
 
+/** La magnitud del ENFEN viene en femenino ("Extraordinaria", por "magnitud").
+ *  Aplicada a "El Niño costero" necesita el masculino. */
+const MAG_MASC = {
+  extraordinaria: "extraordinario", "muy fuerte": "muy fuerte", fuerte: "fuerte",
+  moderada: "moderado", "débil": "débil", debil: "débil",
+};
+const magMasculino = (m) => MAG_MASC[String(m).toLowerCase().trim()] || String(m).toLowerCase();
+
 const catClass = (cat = "") => {
   const c = cat.toLowerCase();
   if (c.includes("extraordinaria") || c.includes("muy fuerte")) return "tag-warm3";
@@ -372,7 +380,7 @@ function renderKPIs(enso, enfen) {
     titleEl.innerHTML = `El mar frente al Perú está <em>${nf(1).format(Math.abs(week.n12a))} °C</em> sobre lo normal`;
   }
   $("#hero-lede").innerHTML =
-    `El ENFEN mantiene la alerta máxima: El Niño costero es <strong>${mag.toLowerCase()}</strong> y seguiría así hasta ${monthLabel("2027-01", true)}.`;
+    `El ENFEN mantiene la alerta máxima: El Niño costero es <strong>${magMasculino(mag)}</strong> y seguiría así hasta ${monthLabel("2027-01", true)}.`;
 
   // banda ENFEN
   const com = enfen.latest_comunicado;
