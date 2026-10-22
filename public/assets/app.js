@@ -897,7 +897,7 @@ function renderSources(meta) {
     return `<tr>
       <td class="src-name"><a href="${s.url}" target="_blank" rel="noopener">${s.name}</a><span class="src-detail">${s.publisher}</span></td>
       <td>${what}</td><td>${s.frequency}</td>
-      <td><span class="status-dot ${st.ok ? "status-ok" : "status-fail"}">${st.ok ? "OK" : "falló"}</span></td>
+      <td><span class="status-dot ${st.ok ? (st.backup ? "status-backup" : "status-ok") : "status-fail"}">${st.ok ? (st.backup ? "respaldo" : "OK") : "falló"}</span></td>
     </tr>`;
   });
   const c = meta.curated;

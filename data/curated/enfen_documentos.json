@@ -1,0 +1,232 @@
+{
+ "_readme": "Respaldo de los documentos del ENFEN. Se usa cuando el build no puede resolver enfen.imarpe.gob.pe (los servidores de GitHub no resuelven ese dominio). Se actualiza a mano o volviendo a ejecutar el build desde Perú.",
+ "snapshot": {
+  "generado": "2026-10-21T22:56:11-05:00",
+  "informe": "Informe Técnico ENFEN Año 12 N° 18 — corte 13 de octubre de 2026"
+ },
+ "reports": [
+  {
+   "type": "informe",
+   "n": 18,
+   "year": 2026,
+   "anio_comision": 12,
+   "cutoff": "2026-10-13",
+   "title": "Informe Técnico ENFEN Año 12 N° 18 — corte 13 de octubre de 2026",
+   "url": "https://enfen.imarpe.gob.pe/download/informe-tecnico-enfen-ano-12-n18-al-13-de-octubre-de-2026-2/?wpdmdl=2166&refresh=6ad925161b4fa1792615702"
+  },
+  {
+   "type": "informe",
+   "n": 17,
+   "year": 2026,
+   "anio_comision": 12,
+   "cutoff": "2026-09-25",
+   "title": "Informe Técnico ENFEN Año 12 N° 17 — corte 25 de setiembre de 2026",
+   "url": "https://enfen.imarpe.gob.pe/download/informe-tecnico-enfen-ano-12-n17-al-25-de-setiembre-de-2026/?wpdmdl=2162&refresh=6ad925161be5b1792615702"
+  },
+  {
+   "type": "informe",
+   "n": 16,
+   "year": 2026,
+   "anio_comision": 12,
+   "cutoff": "2026-09-11",
+   "title": "Informe Técnico ENFEN Año 12 N° 16 — corte 11 de setiembre de 2026",
+   "url": "https://enfen.imarpe.gob.pe/download/informe-tecnico-enfen-ano-12-n16-al-11-de-setiembre-de-2026/?wpdmdl=2159&refresh=6ad925161c6f31792615702"
+  }
+ ],
+ "comunicados": [
+  {
+   "type": "comunicado",
+   "n": 18,
+   "year": 2026,
+   "cutoff": "2026-10-16",
+   "weight": "759.98 KB",
+   "title": "Comunicado Oficial ENFEN N° 18-2026",
+   "url": "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-18-2026/?wpdmdl=2165&refresh=6ad92516126231792615702"
+  },
+  {
+   "type": "comunicado",
+   "n": 17,
+   "year": 2026,
+   "cutoff": "2026-09-28",
+   "weight": "699.39 KB",
+   "title": "Comunicado Oficial ENFEN N° 17-2026",
+   "url": "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-17-2026/?wpdmdl=2161&refresh=6ad925161335e1792615702"
+  },
+  {
+   "type": "comunicado",
+   "n": 16,
+   "year": 2026,
+   "cutoff": "2026-09-14",
+   "weight": "905.10 KB",
+   "title": "Comunicado Oficial ENFEN N° 16-2026",
+   "url": "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-16-2026/?wpdmdl=2158&refresh=6ad9251613f781792615702"
+  },
+  {
+   "type": "comunicado",
+   "n": 15,
+   "year": 2026,
+   "cutoff": "2026-08-28",
+   "weight": "16.78 MB",
+   "title": "Comunicado Oficial ENFEN N° 15-2026",
+   "url": "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-15-2026/?wpdmdl=2145&refresh=6ad9251614b071792615702"
+  }
+ ],
+ "notas": [
+  {
+   "type": "nota",
+   "n": 2,
+   "year": 2026,
+   "cutoff": null,
+   "title": "Nota Técnica ENFEN N° 2-2026",
+   "url": "https://enfen.imarpe.gob.pe/download/nota-tecnica-enfen-02-2026-sistema-de-alerta-ante-el-nino-costero-y-la-nina-costera/?wpdmdl=1988&refresh=6ad9251640b431792615702"
+  },
+  {
+   "type": "nota",
+   "n": 2,
+   "year": 2024,
+   "cutoff": null,
+   "title": "Nota Técnica ENFEN N° 2-2024",
+   "url": "https://enfen.imarpe.gob.pe/download/nota-tecnica-enfen-02-2024-sistema-de-alerta-ante-el-nino-y-la-nina-costera/?wpdmdl=1906&refresh=6ad92516416bf1792615702"
+  }
+ ],
+ "news": [
+  {
+   "date": "2026-07-17",
+   "title": "COMUNICADO OFICIAL ENFEN N° 13 – 2026 Estado de sistema de alerta: Alerta de El Niño Costero",
+   "url": "https://enfen.imarpe.gob.pe/2026/07/17/comunicado-oficial-enfen-n-13-2026-estado-de-sistema-de-alerta-alerta-de-el-nino-costero/",
+   "summary": "La Comisión Multisectorial encargada del Estudio Nacional del Fenómeno “El Niño” (ENFEN), luego de analizar la evolución reciente del acoplamiento entre las condiciones oceánicas y atmosféricas en el Pacífico Tropical, así como los últimos pronósticos climáticos nacionales e internacionales, mantiene el estado de “Alerta de…"
+  },
+  {
+   "date": "2026-06-26",
+   "title": "Comunicado Oficial ENFEN N° 12 -2026 – Estado del sistema de alerta: Alerta de El Niño Costero",
+   "url": "https://enfen.imarpe.gob.pe/2026/06/26/comunicado-oficial-enfen-n-12-2026-estado-del-sistema-de-alerta-alerta-de-el-nino-costero/",
+   "summary": "Tras evaluar las condiciones oceánicas y atmosféricas recientes en el Pacífico Tropical (Figura 1), junto con los últimos pronósticos climáticos nacionales e internacionales, la Comisión Multisectorial encargada del Estudio Nacional del Fenómeno “El Niño” (ENFEN) mantiene el estado de “Alerta de El Niño Costero” y…"
+  },
+  {
+   "date": "2026-06-16",
+   "title": "Niño Costero se intensifica y podría coincidir con El Niño global hasta el verano de 2027",
+   "url": "https://enfen.imarpe.gob.pe/2026/06/16/nino-costero-se-intensifica-y-podria-coincidir-con-el-nino-global-hasta-el-verano-de-2027/",
+   "summary": "El fenómeno de El Niño Costero ha ingresado a una fase de mayor intensidad y podría coincidir en los próximos meses con el desarrollo de El Niño en el Pacífico central, configurando un escenario de calentamiento generalizado del océano Pacífico ecuatorial que podría extenderse…"
+  },
+  {
+   "date": "2026-06-16",
+   "title": "Enfen mantiene alerta por El Niño Costero y advierte que continuará hasta el verano de 2027",
+   "url": "https://enfen.imarpe.gob.pe/2026/06/16/enfen-mantiene-alerta-por-el-nino-costero-y-advierte-que-continuara-hasta-el-verano-de-2027/",
+   "summary": "El Enfen advirtió que el fenómeno de El Niño Costero podría alcanzar una fuerte intensidad en el verano de 2027. El escenario elevaría el riesgo de lluvias intensas, inundaciones y otros eventos extremos en varias regiones del país, por lo que se exhortó a reforzar…"
+  },
+  {
+   "date": "2026-06-15",
+   "title": "Comunicado Oficial ENFEN N° 11 -2026 – Estado del sistema de alerta: Alerta de El Niño Costero",
+   "url": "https://enfen.imarpe.gob.pe/2026/06/15/comunicado-oficial-enfen-n-11-2026-estado-del-sistema-de-alerta-alerta-de-el-nino-costero/",
+   "summary": "La Comisión Multisectorial encargada del Estudio Nacional del Fenómeno “El Niño” (ENFEN), mantiene el estado de “Alerta de El Niño Costero”. Tras analizar la persistencia de las condiciones anómalas del océano y la atmósfera en el Pacífico Tropical, así como los últimos pronósticos climáticos de…"
+  },
+  {
+   "date": "2026-05-29",
+   "title": "Comunicado Oficial ENFEN N° 10 -2026 – Estado del sistema de alerta: Alerta de El Niño Costero",
+   "url": "https://enfen.imarpe.gob.pe/2026/05/29/comunicado-oficial-enfen-n-10-2026-estado-del-sistema-de-alerta-alerta-de-el-nino-costero/",
+   "summary": "La Comisión Multisectorial encargada del Estudio Nacional del Fenómeno “El Niño” (ENFEN), mantiene el estado de “Alerta de El Niño Costero”. Tras analizar las condiciones oceánicas y atmosféricas actuales y los últimos pronósticos climáticos para la región Niño 1+2, la Comisión prevé que El Niño…"
+  },
+  {
+   "date": "2026-05-15",
+   "title": "Comunicado Oficial ENFEN N° 09 -2026 – Estado del sistema de alerta: Alerta de El Niño Costero",
+   "url": "https://enfen.imarpe.gob.pe/2026/05/15/comunicado-oficial-enfen-n-09-2026-estado-del-sistema-de-alerta-alerta-de-el-nino-costero/",
+   "summary": "La Comisión Multisectorial encargada del Estudio Nacional del Fenómeno “El Niño” (ENFEN), mantiene el estado de “Alerta de El Niño Costero”, tras analizar las condiciones oceánicas y atmosféricas actuales y los últimos pronósticos climáticos nacionales e internacionales, para la región Niño 1+2 (Figura 1), siendo…"
+  },
+  {
+   "date": "2026-04-30",
+   "title": "Comunicado Oficial ENFEN N° 08 -2026 – Estado del sistema de alerta: Alerta de El Niño Costero",
+   "url": "https://enfen.imarpe.gob.pe/2026/04/30/comunicado-oficial-enfen-n-08-2026-estado-del-sistema-de-alerta-alerta-de-el-nino-costero/",
+   "summary": "La Comisión Multisectorial encargada del Estudio Nacional del Fenómeno “El Niño” (ENFEN), mantiene el estado de “Alerta de El Niño Costero”, tras analizar las condiciones oceánicas y atmosféricas actuales y los pronósticos climáticos nacionales e internacionales para la región Niño 1+2. Asimismo, estima que es…"
+  },
+  {
+   "date": "2026-04-27",
+   "title": "Nota de Prensa ENFEN N°01- 2026",
+   "url": "https://enfen.imarpe.gob.pe/2026/04/27/nota-de-prensa-enfen-n01-2026/",
+   "summary": "Ante la difusión en medios de comunicación y redes sociales sobre la posible ocurrencia de un evento “El Niño” de magnitud “Muy Fuerte” o “Super Niño”, con alcance global, la Comisión Encargada del Estudio Nacional del Fenómeno El Niño (ENFEN) informa a la ciudadanía lo…"
+  },
+  {
+   "date": "2026-04-16",
+   "title": "Comunicado Oficial ENFEN N° 07 -2026 – Estado del sistema de alerta: Alerta de El Niño Costero",
+   "url": "https://enfen.imarpe.gob.pe/2026/04/16/comunicado-oficial-enfen-n-07-2026-estado-del-sistema-de-alerta-alerta-de-el-nino-costero/",
+   "summary": "La Comisión Multisectorial encargada del Estudio Nacional del Fenómeno “El Niño” (ENFEN), tras analizar las condiciones oceánicas y atmosféricas observadas hasta la fecha, así como los nuevos resultados de los pronósticos climáticos nacionales e internacionales para la región Niño 1+2, mantiene el estado de “Alerta…"
+  },
+  {
+   "date": "2026-03-28",
+   "title": "Enfen mantiene alerta por El Niño Costero en el litoral peruano: alcanzaría nivel moderado de mayo a julio",
+   "url": "https://enfen.imarpe.gob.pe/2026/03/28/enfen-mantiene-alerta-por-el-nino-costero-en-el-litoral-peruano-alcanzaria-nivel-moderado-de-mayo-a-julio/",
+   "summary": "Los modelos climáticos proyectan condiciones neutras en el Pacífico central hasta junio de 2026 a partir de julio podría desarrollarse un evento El Niño de baja intensidad INFOBAE: https://www.infobae.com/peru/2026/03/28/enfen-mantiene-alerta-por-el-nino-costero-en-el-litoral-peruano-alcanzaria-nivel-moderado-de-mayo-a-julio/"
+  },
+  {
+   "date": "2026-03-28",
+   "title": "ENFEN mantiene el estado de Alerta de El Niño Costero hasta diciembre del 2026",
+   "url": "https://enfen.imarpe.gob.pe/2026/03/28/enfen-mantiene-el-estado-de-alerta-de-el-nino-costero-hasta-diciembre-del-2026/",
+   "summary": "Exitosa http://ipshort.ipnoticias.com/Scrgo El ingeniero Luis Vázquez, vocero del ENFEN, confirmó que el estado de alerta por el fenómeno del Niño Costero se extenderá hasta diciembre de 2026, con lluvias intensas y temperaturas elevadas especialmente en la costa norte, como Piura, entre mayo y julio. Este…"
+  },
+  {
+   "date": "2026-03-27",
+   "title": "Comunicado Oficial ENFEN N° 06 -2026 – Estado del sistema de alerta: Alerta de El Niño Costero",
+   "url": "https://enfen.imarpe.gob.pe/2026/03/27/comunicado-oficial-enfen-n-06-2026-estado-del-sistema-de-alerta-alerta-de-el-nino-costero/",
+   "summary": "La Comisión Multisectorial del Estudio Nacional del Fenómeno El Niño (ENFEN), con base en el análisis de las condiciones oceánicas y atmosféricas observadas hasta la fecha, así como en la evaluación de los pronósticos de los modelos climáticos nacionales e internacionales vigentes, mantiene el estado…"
+  },
+  {
+   "date": "2026-03-13",
+   "title": "Comunicado Oficial ENFEN N° 05 -2026 – Estado del sistema de alerta: Alerta de El Niño Costero",
+   "url": "https://enfen.imarpe.gob.pe/2026/03/13/comunicado-oficial-enfen-n-05-2026-estado-del-sistema-de-alerta-alerta-de-el-nino-costero/",
+   "summary": "La Comisión Multisectorial del Estudio Nacional del Fenómeno El Niño (ENFEN), con base en el análisis de las condiciones oceánicas y atmosféricas observadas hasta la fecha, así como en la evaluación de los pronósticos de los modelos climáticos nacionales e internacionales actualizados, mantiene el estado…"
+  },
+  {
+   "date": "2026-02-27",
+   "title": "Comunicado Oficial ENFEN N° 04 -2026 – Estado del sistema de alerta: Alerta de El Niño Costero",
+   "url": "https://enfen.imarpe.gob.pe/2026/02/27/2095/",
+   "summary": "La Comisión Multisectorial del Estudio Nacional del Fenómeno El Niño (ENFEN), con base en el análisis de las condiciones oceánicas y atmosféricas observadas hasta la fecha, así como en la evaluación de los pronósticos de los modelos climáticos nacionales e internacionales actualizados, considera que El…"
+  },
+  {
+   "date": "2026-02-13",
+   "title": "Comunicado Oficial ENFEN N° 03 -2026 – Estado del sistema de alerta: Alerta de El Niño Costero",
+   "url": "https://enfen.imarpe.gob.pe/2026/02/13/comunicado-oficial-enfen-n-03-2026-estado-del-sistema-de-alerta-alerta-de-el-nino-costero/",
+   "summary": "La Comisión Multisectorial del Estudio Nacional del Fenómeno El Niño (ENFEN), con base en el análisis de las condiciones oceánicas y atmosféricas observadas hasta la fecha, así como en la evaluación de los pronósticos de los modelos climáticos nacionales e internacionales actualizados, considera que…"
+  },
+  {
+   "date": "2026-02-13",
+   "title": "El Niño Costero iniciaría en marzo y Enfen activa estado de alerta",
+   "url": "https://enfen.imarpe.gob.pe/2026/02/13/el-nino-costero-iniciaria-en-marzo-y-enfen-activa-estado-de-alerta/",
+   "summary": "La Comisión Multisectorial del Estudio Nacional del Fenómeno El Niño (Enfen) advirtió que el desarrollo de El Niño Costero empezaría a partir de marzo y persistiría hasta noviembre, por lo que dispuso activar el “estado de alerta”."
+  },
+  {
+   "date": "2026-01-30",
+   "title": "Comunicado Oficial ENFEN N° 02 -2026 – Estado del sistema de alerta: Alerta de El Niño Costero",
+   "url": "https://enfen.imarpe.gob.pe/2026/01/30/comunicado-oficial-enfen-n-02-2026-estado-del-sistema-de-alerta-alerta-de-el-nino-costero/",
+   "summary": "La Comisión Multisectorial del ENFEN, en base al análisis de las condiciones oceánicas y atmosféricas observadas hasta la fecha, así como de los pronósticos de los modelos climáticos nacionales e internacionales actualizados, considera que, las condiciones cálidas débiles2 son más probables a partir de marzo…"
+  },
+  {
+   "date": "2026-01-15",
+   "title": "Comunicado Oficial ENFEN N° 01-2026 – Estado del sistema de alerta ante El Niño Costero/ La Niña Costera: Vigilancia de El Niño Costero&#8221;",
+   "url": "https://enfen.imarpe.gob.pe/2026/01/15/comunicado-oficial-enfen-n-01-2026-estado-del-sistema-de-alerta-ante-el-nino-costero-la-nina-costera-vigilancia-de-el-nino-costero/",
+   "summary": "La Comisión Multisectorial del ENFEN, en base al análisis de las condiciones oceánicas y atmosféricas observadas hasta la fecha, así como de los pronósticos de los modelos climáticos nacionales e internacionales, considera que, a partir de abril de 2026, las condiciones cálidas débiles son…"
+  },
+  {
+   "date": "2025-12-07",
+   "title": "Perú fue sede de la XXXIV Reunión Anual del Comité Científico Regional – ERFEN",
+   "url": "https://enfen.imarpe.gob.pe/2025/12/07/peru-fue-sede-de-la-xxxiv-reunion-anual-del-comite-cientifico-regional-erfen/",
+   "summary": "El Instituto del Mar del Perú – IMARPE, en su calidad de institución científica nacional, fue anfitrión y sede de la “XXXIV Reunión Anual del Comité Científico Regional del Protocolo sobre el Programa para el Estudio del Fenómeno El Niño en el Pacífico Sudeste –…"
+  }
+ ],
+ "latest_report": {
+  "type": "informe",
+  "n": 18,
+  "year": 2026,
+  "anio_comision": 12,
+  "cutoff": "2026-10-13",
+  "title": "Informe Técnico ENFEN Año 12 N° 18 — corte 13 de octubre de 2026",
+  "url": "https://enfen.imarpe.gob.pe/download/informe-tecnico-enfen-ano-12-n18-al-13-de-octubre-de-2026-2/?wpdmdl=2166&refresh=6ad925161b4fa1792615702"
+ },
+ "latest_comunicado": {
+  "type": "comunicado",
+  "n": 18,
+  "year": 2026,
+  "cutoff": "2026-10-16",
+  "weight": "759.98 KB",
+  "title": "Comunicado Oficial ENFEN N° 18-2026",
+  "url": "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-18-2026/?wpdmdl=2165&refresh=6ad92516126231792615702"
+ }
+}

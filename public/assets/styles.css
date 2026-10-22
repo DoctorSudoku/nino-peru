@@ -427,6 +427,7 @@ tbody tr:hover { background: var(--surface-2); }
 .status-ok::before { background: var(--ok); }
 .status-fail::before { background: var(--accent); }
 .status-manual::before { background: var(--warn); }
+.status-backup::before { background: var(--warn); }
 
 details.method { margin-top: 1rem; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
 details.method > summary { cursor: pointer; padding: .7rem 1rem; font-weight: 600; font-size: .84rem; }

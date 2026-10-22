@@ -818,6 +818,20 @@ def main() -> int:
     except Exception as exc:  # noqa: BLE001
         print(f"AVISO daños: {exc}", file=_sys.stderr)
 
+    # --- respaldo de documentos del ENFEN (GitHub no resuelve enfen.imarpe.gob.pe)
+    respaldo_path = ROOT / "data" / "curated" / "enfen_documentos.json"
+    if respaldo_path.exists() and not enfen_live.get("reports"):
+        try:
+            snap = json.loads(respaldo_path.read_text(encoding="utf-8"))
+            for k in ("reports", "comunicados", "notas", "news", "latest_report", "latest_comunicado"):
+                if not enfen_live.get(k):
+                    enfen_live[k] = snap.get(k)
+            status["enfen"] = {"ok": True, "backup": True, "at": now_iso(),
+                               "nota": f"respaldo del {snap.get('snapshot', {}).get('generado', '')[:10]}"}
+            print("OK  enfen: documentos desde el respaldo local")
+        except Exception as exc:  # noqa: BLE001
+            print(f"AVISO respaldo ENFEN: {exc}", file=sys.stderr)
+
     curated = json.loads(CURATED.read_text(encoding="utf-8"))
 
     # datos hidrológicos extraídos de las tablas 4 y 5 del informe
