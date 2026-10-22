@@ -93,6 +93,19 @@ campo `page` para eso. Si no se puede citar, no se publica.
 
 ## Playbook de incidentes
 
+### El ENFEN no resuelve desde GitHub
+
+Es el caso conocido: `enfen.imarpe.gob.pe` resuelve en Perú pero no desde los runners de
+GitHub. El build usa el respaldo `data/curated/enfen_documentos.json` y lo marca como
+"respaldo" en la tabla de fuentes.
+
+Para actualizar la lista cuando salga un comunicado nuevo, desde una máquina en Perú:
+
+1. `python3 scripts/build.py`
+2. Copiar `reports`, `comunicados`, `notas` y `news` desde `public/data/enfen.json`
+   hacia `data/curated/enfen_documentos.json`, y actualizar el campo `snapshot`.
+3. Commit y push.
+
 ### Una fuente dejó de responder
 
 El build no se cae: escribe el error en `meta.json` y conserva el JSON anterior. La

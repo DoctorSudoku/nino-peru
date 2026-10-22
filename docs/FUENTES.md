@@ -14,7 +14,12 @@ técnico» es lo que realmente respondió, no lo que la documentación promete.
 | NOAA OISST v2.1 NRT (CoastWatch ERDDAP) | `https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21NrtAgg.csv` | Rejilla 0,25° de TSM y anomalía para el mapa | **diaria** | ✅ CSV por caja geográfica; `last` da el dato más reciente (ayer). Devuelve `NaN` sobre tierra: hay que limpiarlo o el JSON queda inválido |
 
 > El dominio `enfen.gob.pe` **no resuelve** (DNS). El sitio operativo es
-> `enfen.imarpe.gob.pe`. Hay páginas antiguas que aún enlazan al dominio muerto.
+> `enfen.imarpe.gob.pe`. Hay páginas antiguas que aún enlazan al dominio muerto.>
+> ⚠️ **Desde los servidores de GitHub Actions, `enfen.imarpe.gob.pe` tampoco resuelve**
+> (`Temporary failure in name resolution`). El build usa entonces
+> `data/curated/enfen_documentos.json`, una copia fechada de los últimos documentos.
+> Para refrescarla hay que ejecutar el build desde el Perú y volver a commitear ese
+> archivo. La tabla de fuentes lo marca como **"respaldo"**.
 
 ## Verificadas a mano (curadas, con cita de página)
 
