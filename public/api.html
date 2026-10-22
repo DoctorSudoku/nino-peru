@@ -54,6 +54,18 @@ curl -s data/enfen.json | jq '.alert, .forecast'</pre>
 
   <div id="eps"></div>
 
+  <h2 style="margin-top:2rem">MCP (para asistentes de IA)</h2>
+  <p>Servidor <strong>Model Context Protocol</strong> remoto: cualquier cliente compatible
+     puede consultar los datos sin descargar nada. Seis herramientas y un catálogo de recursos.</p>
+  <pre class="block">Endpoint:  https://nino-peru-mcp.doctorsudoku.workers.dev/mcp
+Transporte: HTTP (JSON-RPC 2.0), sin sesión</pre>
+  <pre class="block">claude mcp add --transport http nino-peru \
+  https://nino-peru-mcp.doctorsudoku.workers.dev/mcp</pre>
+  <div class="campos" style="margin-bottom:1.5rem">
+    <span>resumen_actual</span><span>indices_enso</span><span>clima_ciudades</span>
+    <span>agua_territorio</span><span>incidencias_recientes</span><span>buscar_datos</span>
+  </div>
+
   <h2 style="margin-top:2rem">Condiciones</h2>
   <ul style="font-size:.88rem;color:var(--ink-2)">
     <li>Frecuencia: los índices de NOAA se actualizan a diario; el ENFEN, cada dos semanas; INDECI, varias veces al día.</li>

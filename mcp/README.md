@@ -18,10 +18,10 @@ npx wrangler login      # abre el navegador, crea o usa tu cuenta de Cloudflare
 npx wrangler deploy
 ```
 
-Al terminar imprime la URL:
+Al terminar imprime la URL. La instancia ya desplegada es:
 
 ```
-https://nino-peru-mcp.TU-SUBDOMINIO.workers.dev/mcp
+https://nino-peru-mcp.doctorsudoku.workers.dev/mcp
 ```
 
 Probar sin desplegar, en local:
