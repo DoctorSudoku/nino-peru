@@ -267,8 +267,11 @@ def build_enso(nino_raw: bytes, oni_raw: bytes, nrt_raw: bytes | None = None) ->
     # en 1950 y suele ir uno a cuatro meses por detrás; la serie NRT (sstoi.indices) llega
     # al último mes cerrado. Se empalman: NRT manda en su ventana, ERSSTv5 cubre la historia.
     if nrt:
-        corte = min((r["y"], r["m"]) for r in nrt)
-        monthly = [r for r in hist if (r["y"], r["m"]) < corte] + nrt
+        # ERSSTv5 manda en toda su cobertura; de NRT se toman solo los meses que aún no
+        # existen en ERSSTv5. Empalmar NRT desde 1982 reescribiría la historia publicada:
+        # el pico de 1997-98 pasaría de +2,41 a +2,11 (las series no son intercambiables).
+        ultimo_hist = max((r["y"], r["m"]) for r in hist)
+        monthly = hist + [r for r in nrt if (r["y"], r["m"]) > ultimo_hist]
     else:
         monthly = hist
 
@@ -306,9 +309,10 @@ def build_enso(nino_raw: bytes, oni_raw: bytes, nrt_raw: bytes | None = None) ->
         "coverage": coverage,
         "lag_note": (
             f"La serie mensual se arma con dos publicaciones de NOAA: ERSSTv5 (desde 1950, llega a "
-            f"{coverage['ersst5_last']}) y la serie NRT (llega a {coverage['nrt_last']}). Se usa NRT en "
-            f"los meses recientes y ERSSTv5 para la historia; el último mes publicado es {coverage['used_last']}. "
-            "El ONI estacional puede ir una temporada por delante."
+            f"{coverage['ersst5_last']}) y la serie NRT (llega a {coverage['nrt_last']}). ERSSTv5 cubre "
+            f"toda su historia y NRT solo añade los meses posteriores; el último mes publicado es "
+            f"{coverage['used_last']}. Las dos series no son idénticas (en 1997-98 difieren ~0,3 °C), "
+            "por eso no se sustituye la historia. El ONI estacional puede ir una temporada por delante."
         ),
         "stats": {
             "n_months": len(monthly),
