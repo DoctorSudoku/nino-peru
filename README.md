@@ -1,6 +1,6 @@
 # El Niño · Perú — tablero de seguimiento
 
-[![Actualizar datos y publicar](https://github.com/USUARIO/nino-peru/actions/workflows/publicar.yml/badge.svg)](https://github.com/USUARIO/nino-peru/actions/workflows/publicar.yml)
+[![Actualizar datos y publicar](https://github.com/DoctorSudoku/nino-peru/actions/workflows/publicar.yml/badge.svg)](https://github.com/DoctorSudoku/nino-peru/actions/workflows/publicar.yml)
 
 Prototipo de tablero periodístico interactivo sobre el fenómeno El Niño-Oscilación Sur
 (ENOS), con foco en el Perú (costa peruana, territorios y sectores) y lectura global
