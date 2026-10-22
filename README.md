@@ -113,9 +113,10 @@ Los PDFs se cachean en `data/raw/indeci/` para no descargarlos en cada ejecució
   `public/data/index.json` y la documentación en `api.html`.
 - **Embebibles**: `index.html?embed=<sección>` renderiza una sola sección, sin cabecera
   ni pie. `embebibles.html` genera el código `<iframe>` de cada una.
-- **MCP**: `python3 scripts/mcp_server.py` expone cuatro herramientas
-  (`resumen_actual`, `indices_enso`, `agua_territorio`, `incidencias_recientes`) por
-  stdio, para asistentes que hablen Model Context Protocol.
+- **MCP remoto**: [`mcp/`](mcp/README.md) contiene un Worker de Cloudflare que expone
+  seis herramientas por HTTP en `/mcp`, sin que el cliente necesite el repositorio.
+- **MCP local**: `python3 scripts/mcp_server.py` (stdio) para trabajar sobre los archivos
+  del repositorio sin desplegar nada.
 
 ## Publicar y mantener
 

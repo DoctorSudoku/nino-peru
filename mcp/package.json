@@ -1,0 +1,14 @@
+{
+  "name": "nino-peru-mcp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Servidor MCP remoto del tablero El Ni\u00f1o Per\u00fa",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4"
+  },
+  "type": "module"
+}

@@ -1,0 +1,8 @@
+name = "nino-peru-mcp"
+main = "worker.js"
+compatibility_date = "2026-10-01"
+workers_dev = true
+
+# Si algún día cambia el dominio del tablero, se ajusta solo aquí.
+[vars]
+DATA_BASE = "https://doctorsudoku.github.io/nino-peru/data"

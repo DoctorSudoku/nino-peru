@@ -30,3 +30,15 @@ python3 scripts/mcp_server.py
 
 Herramientas: `resumen_actual`, `indices_enso`, `agua_territorio`, `incidencias_recientes`.
 Transporte stdio, JSON-RPC 2.0, un mensaje por línea.
+
+## MCP remoto
+
+Además de los JSON, el tablero ofrece un servidor **Model Context Protocol** por HTTP:
+
+```
+https://nino-peru-mcp.<cuenta>.workers.dev/mcp
+```
+
+Herramientas: `resumen_actual`, `indices_enso`, `clima_ciudades`, `agua_territorio`,
+`incidencias_recientes`, `buscar_datos`. Ver [mcp/README.md](../mcp/README.md) para
+desplegarlo y conectarlo.
