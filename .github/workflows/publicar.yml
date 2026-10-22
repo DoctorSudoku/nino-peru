@@ -44,12 +44,18 @@ jobs:
 
       - name: Construir los datos
         run: |
-          # Reintenta ante fallos transitorios de red (INDECI, PRODUCE, ERDDAP)
+          # Reintenta ante fallos transitorios de red (INDECI, PRODUCE, ERDDAP).
+          # El error se publica como anotación para poder diagnosticarlo sin acceso a logs.
           for i in 1 2 3; do
-            if python scripts/build.py; then exit 0; fi
-            echo "::warning::Intento $i falló; reintentando en 20 s"
+            if python scripts/build.py > build.log 2>&1; then
+              grep -vE "onnxruntime|NetworkStorageDB|writeDBwithCached" build.log | tail -n 40
+              exit 0
+            fi
+            echo "::warning::Intento $i falló"
+            tail -n 40 build.log
             sleep 20
           done
+          echo "::error title=Build falló::$(grep -vE 'onnxruntime|NetworkStorageDB|writeDBwithCached' build.log | tail -n 3 | tr '\n' ' ' | cut -c1-350)"
           exit 1
 
       - name: Verificar frescura
