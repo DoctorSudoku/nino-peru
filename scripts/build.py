@@ -1094,6 +1094,22 @@ def build_incidencias() -> dict:
 
 
 # --------------------------------------------------------------------------- main
+def _sst_publicado() -> dict | None:
+    """Descarga el sst.json que está sirviendo el sitio, como respaldo."""
+    cfg = ROOT / "site.config.json"
+    base = os.environ.get("SITE_URL", "")
+    if not base and cfg.exists():
+        base = json.loads(cfg.read_text(encoding="utf-8")).get("url", "")
+    if not base:
+        return None
+    try:
+        raw = fetch(base.rstrip("/") + "/data/sst.json", "sst_respaldo")
+        dato = json.loads(raw)
+        return dato if dato.get("boxes") else None
+    except Exception:  # noqa: BLE001
+        return None
+
+
 def main() -> int:
     OUT.mkdir(parents=True, exist_ok=True)
     errors = []
@@ -1132,8 +1148,20 @@ def main() -> int:
         )
         print(f"OK  sst: dato del {sst.get('date')}, cajas " + ", ".join(f"{k}={len(v.get('anom') or [])}" for k, v in sst["boxes"].items()))
     except Exception as exc:  # noqa: BLE001
-        print(f"ERROR SST: {exc}", file=sys.stderr)
-        errors.append(f"SST: {exc}")
+        # Si la fuente del mar falla, se reutiliza el último mapa publicado: la fecha
+        # que muestra el mapa es la del dato, así que no se engaña a nadie.
+        previo = _sst_publicado()
+        if previo:
+            (OUT / "sst.json").write_text(
+                json.dumps(previo, ensure_ascii=False, separators=(",", ":"), allow_nan=False),
+                encoding="utf-8")
+            status["noaa_sst"] = {"ok": True, "backup": True, "at": now_iso(),
+                                  "nota": f"último publicado, dato del {previo.get('date')}"}
+            print(f"AVISO SST: {exc} — se reutiliza el mapa del {previo.get('date')}", file=sys.stderr)
+            errors.append(f"SST: {exc} (se usó el mapa del {previo.get('date')})")
+        else:
+            print(f"ERROR SST: {exc}", file=sys.stderr)
+            errors.append(f"SST: {exc}")
 
     for nombre, fn in (("incidencias", build_incidencias), ("noticias", build_noticias),
                        ("pesca", build_pesca), ("pronostico", build_pronostico)):

@@ -66,10 +66,18 @@ jobs:
           test -f public/index.html || (echo "Falta public/index.html" && exit 1)
           python - <<'PY'
           import json, pathlib
-          for f in ("enso", "enfen", "sst", "pesca", "pronostico"):
+          # Esenciales: sin ellos el tablero no dice nada. Su ausencia sí bloquea.
+          for f in ("enso", "enfen"):
               ruta = pathlib.Path("public/data") / f"{f}.json"
               assert ruta.exists(), f"Falta {ruta}"
-              json.loads(ruta.read_text(encoding="utf-8"))
+              assert json.loads(ruta.read_text(encoding="utf-8")), f"{ruta} vacío"
+          # Secundarios: la página degrada (oculta el bloque), no se bloquea el despliegue.
+          for f in ("sst", "pesca", "pronostico", "noticias", "incidencias", "danos", "agua"):
+              ruta = pathlib.Path("public/data") / f"{f}.json"
+              if not ruta.exists():
+                  print(f"::warning::Sin {ruta.name}: esa sección se publica oculta o vacía")
+              else:
+                  json.loads(ruta.read_text(encoding="utf-8"))
           print("Datos válidos.")
           PY
 

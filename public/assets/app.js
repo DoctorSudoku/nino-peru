@@ -609,9 +609,9 @@ function renderCompare(enso) {
 }
 
 function renderAllCharts(enso, enfen, mode) {
-  renderIndicesChart(enfen);
+  seguro(renderIndicesChart(enfen));
   renderHistory(enso, mode || "oni");
-  renderCompare(enso);
+  seguro(renderCompare(enso));
 }
 
 /* ======================================================================
@@ -1218,9 +1218,9 @@ function bindTheme(enso, enfen, state) {
     renderAllCharts(enso, enfen, state.region);
     MapModule.refreshTheme();
     renderIncidencias(incidencias, danos);
-  renderDanos(danos);
-  renderPesca(pesca);
-  renderPronostico(pronostico);
+  seguro(renderDanos(danos));
+  seguro(renderPesca(pesca));
+  seguro(renderPronostico(pronostico));
   });
 }
 
@@ -1253,8 +1253,10 @@ async function init() {
   let enso, enfen, meta, sst, agua, noticias, incidencias, danos, pesca, pronostico;
   try {
     [enso, enfen, meta, sst, agua, noticias, incidencias, danos, pesca, pronostico] = await Promise.all([
-      loadJSON("data/enso.json"), loadJSON("data/enfen.json"), loadJSON("data/meta.json"),
-      loadJSON("data/sst.json"), loadJSON("data/agua.json"),
+      loadJSON("data/enso.json"), loadJSON("data/enfen.json"),
+      loadJSON("data/meta.json").catch(() => null),
+      loadJSON("data/sst.json").catch(() => null),
+      loadJSON("data/agua.json").catch(() => null),
       loadJSON("data/noticias.json").catch(() => ({ items: [] })),
       loadJSON("data/incidencias.json").catch(() => ({ items: [], departamentos: [] })),
       loadJSON("data/danos.json").catch(() => null),
@@ -1268,23 +1270,27 @@ async function init() {
   }
 
   const state = { region: "oni" };
-  renderKPIs(enso, enfen);
-  renderIndicesTable(enfen);
-  renderWeekly(enfen);
+  // Una sección rota no debe impedir que se dibujen las demás.
+  const seguro = (fn, ...args) => {
+    try { fn(...args); } catch (err) { console.error(`Sección con error: ${fn.name}`, err); }
+  };
+  seguro(renderKPIs(enso, enfen));
+  seguro(renderIndicesTable(enfen));
+  seguro(renderWeekly(enfen));
   renderIndicesChart(enfen);
-  renderHistory(enso, "oni");
+  seguro(renderHistory(enso, "oni"));
   renderCompare(enso);
-  renderEpisodesTable(enso);
-  renderForecast(enfen);
-  renderTerritory(agua);
-  renderSectores(enfen, agua);
-  renderNoticias(noticias);
-  renderIncidencias(incidencias, danos);
+  seguro(renderEpisodesTable(enso));
+  seguro(renderForecast(enfen));
+  seguro(renderTerritory(agua));
+  seguro(renderSectores(enfen, agua));
+  seguro(renderNoticias(noticias));
+  seguro(renderIncidencias(incidencias, danos));
   renderDanos(danos);
   renderPesca(pesca);
   renderPronostico(pronostico);
-  renderDocuments(enfen);
-  renderSources(meta);
+  seguro(renderDocuments(enfen));
+  seguro(renderSources(meta));
   bindExports(enfen);
   bindTheme(enso, enfen, state);
 
